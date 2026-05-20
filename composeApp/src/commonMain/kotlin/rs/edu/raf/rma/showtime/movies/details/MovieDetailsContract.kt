@@ -1,0 +1,17 @@
+package rs.edu.raf.rma.premiere.details
+
+import rs.edu.raf.rma.networking.model.ImageApiModel
+import rs.edu.raf.rma.networking.model.MovieDetailsApiModel
+import rs.edu.raf.rma.networking.model.PersonSummaryApiModel
+import rs.edu.raf.rma.networking.model.VideoApiModel
+
+interface MovieDetailsContract {
+    data class UiState(
+        val isLoading: Boolean = false,
+        val movie: MovieDetailsApiModel? = null,
+        val images: List<ImageApiModel> = emptyList(),
+        val actors: List<PersonSummaryApiModel> = emptyList(),
+        val video: VideoApiModel? = null,
+        val error: Throwable? = null
+    )
+}
