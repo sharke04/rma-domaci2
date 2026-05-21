@@ -42,7 +42,7 @@ data class MovieDetailsApiModel(
     val backdropPath: String? = null,
     val homepage: String? = null,
     val genres: List<GenreApiModel> = emptyList(),
-    val collection: CollectionApiModel? = null
+    val collection: CollectionApiModel? = null,
 )
 
 @Serializable

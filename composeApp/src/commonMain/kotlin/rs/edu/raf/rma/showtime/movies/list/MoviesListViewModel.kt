@@ -2,22 +2,15 @@ package rs.edu.raf.rma.premiere.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.ktor.client.call.body
-import io.ktor.client.plugins.ResponseException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import rs.edu.raf.rma.networking.MoviesApi
-import rs.edu.raf.rma.networking.model.ApiErrorResponse
-import kotlin.math.roundToInt
+import rs.edu.raf.rma.showtime.domain.ShowtimeRepository
 
 class MoviesListViewModel(
-    private val moviesApi: MoviesApi
+    private val showtimeRepository: ShowtimeRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(MoviesListContract.UiState())
     val state = _state.asStateFlow()
@@ -35,7 +28,8 @@ class MoviesListViewModel(
 
     init {
         observeEvents()
-        loadData()
+        observeMovies()
+        fetchData()
     }
 
     private fun observeEvents() {
@@ -44,11 +38,9 @@ class MoviesListViewModel(
                 when (event) {
                     is MoviesListContract.UiEvent.OnSortChanged -> {
                         setState { copy(sortBy = event.sortField) }
-                        loadData()
                     }
                     is MoviesListContract.UiEvent.ToggleSortDirection -> {
                         setState { copy(isAscending = !isAscending) }
-                        loadData()
                     }
                     is MoviesListContract.UiEvent.ToggleFilter -> {
                         if (!state.value.isFilterOpen) {
@@ -89,7 +81,6 @@ class MoviesListViewModel(
                                 activeMinRating = minRating
                             )
                         }
-                        loadData()
                     }
                     is MoviesListContract.UiEvent.ClearAllFilters -> {
                         setState {
@@ -106,95 +97,33 @@ class MoviesListViewModel(
                                 activeYearTo = "2025"
                             )
                         }
-                        loadData()
                     }
                 }
             }
         }
     }
 
-    private fun loadData() {
+    private fun observeMovies() {
         viewModelScope.launch {
-            setState { copy(isLoading = true) }
-
-            val genres = moviesApi.getGenres()
-            genres.forEach {
-                genreIds[it.name] = it.id
-            }
-
-            val currentState = _state.value
-            val sortBy = getSortingColumnName(currentState.sortBy)
-            val sortingOrder = if (currentState.isAscending) "asc" else "desc"
-            val title = currentState.activeSearchTitle.takeIf { it.isNotBlank() }
-            val genre = currentState.activeSelectedGenre
-            val yearFrom = currentState.activeYearFrom.toIntOrNull()
-            val yearTo = currentState.activeYearTo.toIntOrNull()
-            val minRating = roundToHalf(currentState.activeMinRating)
-
-            val apiResult = withContext(Dispatchers.IO) {
-                runCatching {
-                    val response = moviesApi.getMovies(
-                        sortBy = sortBy,
-                        sortOrder = sortingOrder,
-                        query = title,
-                        genreId = genreIds[genre],
-                        minYear = yearFrom,
-                        maxYear = yearTo,
-                        minRating = minRating
-                    )
-                    response.copy(
-                        items = response.items
-                    )
+            showtimeRepository.observeMovies()
+                .collect { movies ->
+                    setState { copy(movies = movies) }
                 }
-            }
+        }
+    }
 
-            apiResult.fold(
-                onSuccess = {
-                    setState {
-                        copy(
-                            isLoading = false,
-                            movies = it.items
-                        )
-                    }
-                },
-                onFailure = { throwable ->
-                    val userMessage = when (throwable) {
-                        is ResponseException -> {
-                            try {
-                                val apiError = throwable.response.body<ApiErrorResponse>()
-                                apiError.message
-                            } catch (_: Exception) {
-                                "Error ${throwable.response.status.value}: Unable to load movies."
-                            }
-                        }
-                        else -> throwable.message ?: "Network error occurred."
-                    }
+    private fun fetchData() {
+        viewModelScope.launch {
+            setState { copy(isLoading = true, error = null) }
 
-                    setState {
-                        copy(
-                            isLoading = false,
-                            error = Exception(userMessage)
-                        )
-                    }
-                }
-            )
+            runCatching { showtimeRepository.refreshMovies() }
+                .onFailure { setState { copy(error = it) } }
+
+            setState { copy(isLoading = false) }
         }
     }
 
     fun getGenreList(): List<String> {
         return genreIds.keys.toList()
-    }
-
-    private fun roundToHalf(rating: Float): Float? {
-        if (rating > 0)
-            return (rating * 2).roundToInt() / 2f
-        return null
-    }
-
-    private fun getSortingColumnName(sortingOption: String): String {
-        return if (sortingOption == "Rating")
-            "imdb_rating"
-        else
-            sortingOption.lowercase()
     }
 }

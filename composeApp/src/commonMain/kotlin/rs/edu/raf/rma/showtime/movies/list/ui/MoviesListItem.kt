@@ -31,11 +31,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import rs.edu.raf.rma.networking.model.MovieListItemApiModel
+import rs.edu.raf.rma.showtime.domain.Movie
 import kotlin.toString
 
 @Composable
 fun MovieListItem(
-    movie: MovieListItemApiModel,
+    movie: Movie,
     onClick: (String) -> Unit,
 ) {
     val imageUrl = "https://image.tmdb.org/t/p/w500${movie.posterPath.orEmpty()}"
@@ -46,7 +47,7 @@ fun MovieListItem(
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(Color(0xFF1C1C27)) 
-            .clickable { onClick.invoke(movie.imdbId) }
+            .clickable { onClick.invoke(movie.id) }
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

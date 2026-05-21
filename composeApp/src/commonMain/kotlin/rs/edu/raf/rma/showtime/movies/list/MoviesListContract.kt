@@ -1,10 +1,10 @@
 package rs.edu.raf.rma.premiere.list
 
-import rs.edu.raf.rma.networking.model.MovieListItemApiModel
+import rs.edu.raf.rma.showtime.domain.Movie
 
 interface MoviesListContract {
     data class UiState(
-        val movies: List<MovieListItemApiModel> = emptyList(),
+        val movies: List<Movie> = emptyList(),
         val isLoading: Boolean = true,
         val error: Throwable? = null,
         val sortBy: String = "Rating",

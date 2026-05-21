@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import rs.edu.raf.rma.posts.PostsApp
+import rs.edu.raf.rma.showtime.ShowtimeApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,8 +13,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Log.d("Test", "Main:onCreate()")
         setContent {
-//            PasswordsApp()
-            PostsApp()
+            ShowtimeApp()
         }
     }
 
