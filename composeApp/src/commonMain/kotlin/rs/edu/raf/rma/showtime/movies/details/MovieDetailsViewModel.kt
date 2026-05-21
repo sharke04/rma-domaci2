@@ -7,19 +7,17 @@ import io.ktor.client.call.body
 import io.ktor.client.plugins.ResponseException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import rs.edu.raf.rma.networking.MoviesApi
 import rs.edu.raf.rma.networking.model.ApiErrorResponse
 import rs.edu.raf.rma.showtime.movieIdOrThrow
-import rs.edu.raf.rma.showtime.movies.networking.MoviesApi
 
 class MovieDetailsViewModel(
     private val savedStateHandle: SavedStateHandle,
-    private val moviesApi: MoviesApi
+    private val moviesApi: MoviesApi,
 ) : ViewModel() {
     private val _state = MutableStateFlow(MovieDetailsContract.UiState())
     val state = _state.asStateFlow()

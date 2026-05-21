@@ -5,6 +5,6 @@ import androidx.compose.runtime.Composable
 @Composable
 fun ShowtimeApp() {
     ShowtimeNavigation(
-        startDestination = "welcome"
+        startDestination = "movies"
     )
 }

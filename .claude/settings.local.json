@@ -20,7 +20,10 @@
       "Bash(mv /Users/ailic/Source/rma/2026/rma-09-kotlin-vezbe/desktopApp /Users/ailic/Source/rma/2026/rma-09-kotlin-vezbe/app/desktop)",
       "Bash(mv /Users/ailic/Source/rma/2026/rma-09-kotlin-vezbe/iosApp /Users/ailic/Source/rma/2026/rma-09-kotlin-vezbe/app/ios)",
       "Bash(grep *)",
-      "Bash(sqlite3 *)"
+      "Bash(sqlite3 *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\PC\\\\Documents\\\\raf\\\\rma\\\\drugi projekat\\\\showtime\" -Force)",
+      "Bash(Select-Object Name, Mode)",
+      "Bash(git *)"
     ]
   }
 }

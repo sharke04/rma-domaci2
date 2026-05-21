@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import rs.edu.raf.rma.networking.MoviesApi
 import rs.edu.raf.rma.networking.model.ApiErrorResponse
-import rs.edu.raf.rma.showtime.movies.networking.MoviesApi
 import kotlin.math.roundToInt
 
 class MoviesListViewModel(

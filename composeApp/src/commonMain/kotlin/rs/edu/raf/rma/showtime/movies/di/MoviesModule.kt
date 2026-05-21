@@ -1,4 +1,4 @@
-package rs.edu.raf.rma.di
+package rs.edu.raf.rma.showtime.movies.di
 
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module

@@ -15,7 +15,9 @@ import rs.edu.raf.rma.core.auth.AuthStore
 import rs.edu.raf.rma.core.auth.model.AuthState
 import rs.edu.raf.rma.networking.BeskarApi
 import rs.edu.raf.rma.networking.HttpClientFactory
+import rs.edu.raf.rma.networking.MoviesApi
 import rs.edu.raf.rma.networking.createBeskarApi
+import rs.edu.raf.rma.networking.createMoviesApi
 
 val networkingModule = module {
 
@@ -63,12 +65,21 @@ val networkingModule = module {
         }
     }
 
+    // TODO: Mozda treba obrisati Beskar API
     single<BeskarApi> {
         Ktorfit.Builder()
             .httpClient(get<HttpClient>(Qualifiers.Unauthenticated))
             .baseUrl("https://rma.finlab.rs/beskar/")
             .build()
             .createBeskarApi()
+    }
+
+    single<MoviesApi> {
+        Ktorfit.Builder()
+            .httpClient(get<HttpClient>(Qualifiers.Unauthenticated))
+            .baseUrl("https://rma.finlab.rs/")
+            .build()
+            .createMoviesApi()
     }
 }
 

@@ -1,4 +1,4 @@
-package rs.edu.raf.rma.showtime.movies.networking
+package rs.edu.raf.rma.networking
 
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Path

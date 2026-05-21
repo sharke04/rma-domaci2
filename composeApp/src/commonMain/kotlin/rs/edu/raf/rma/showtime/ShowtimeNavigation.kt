@@ -38,9 +38,9 @@ fun ShowtimeNavigation(
         }
 
         composable(
-            route = "movies/$MOVIE_ID",
+            route = "movies/{$MOVIE_ID}",
             arguments = listOf(
-                navArgument(POST_ID) {
+                navArgument(MOVIE_ID) {
                     type = NavType.StringType
                     nullable = false
                 },
