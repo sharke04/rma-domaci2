@@ -9,7 +9,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import org.koin.compose.viewmodel.koinViewModel
-import rs.edu.raf.rma.posts.POST_ID
 import rs.edu.raf.rma.premiere.details.MovieDetailsViewModel
 import rs.edu.raf.rma.premiere.details.ui.MovieDetailsScreen
 import rs.edu.raf.rma.premiere.list.MoviesListViewModel
