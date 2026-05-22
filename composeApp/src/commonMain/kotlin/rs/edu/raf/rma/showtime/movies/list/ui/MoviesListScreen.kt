@@ -53,7 +53,6 @@ fun MoviesListScreen(
     val state by viewModel.state.collectAsState()
 
     MoviesListScreen(
-        viewModel = viewModel,
         state = state,
         onMovieClick = onMovieClick,
         eventPublisher = viewModel::setEvent,
@@ -62,7 +61,6 @@ fun MoviesListScreen(
 
 @Composable
 private fun MoviesListScreen(
-    viewModel: MoviesListViewModel,
     state: MoviesListContract.UiState,
     onMovieClick: (movieId: String) -> Unit,
     eventPublisher: (MoviesListContract.UiEvent) -> Unit = {}
@@ -87,7 +85,6 @@ private fun MoviesListScreen(
                         onUpdateYearRange = { from, to -> eventPublisher(MoviesListContract.UiEvent.UpdateYearRange(from, to)) },
                         onUpdateRating = { rating -> eventPublisher(MoviesListContract.UiEvent.UpdateRating(rating)) },
                         onApplyFilters = { eventPublisher(MoviesListContract.UiEvent.ApplyFilters) },
-                        viewModel = viewModel,
                     )
                 }
                 else {

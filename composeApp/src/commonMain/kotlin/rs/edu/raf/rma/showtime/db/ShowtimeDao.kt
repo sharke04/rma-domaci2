@@ -17,6 +17,9 @@ interface ShowtimeDao {
     @Upsert
     suspend fun upsertMovieGenreCrossRefs(crossRefs: List<MovieGenreCrossRef>)
 
+    @Query("SELECT * FROM genres ORDER BY name ASC")
+    fun observeGenres(): Flow<List<GenreEntity>>
+
     @Transaction
     @Query("""
         SELECT DISTINCT movies.*

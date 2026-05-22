@@ -31,7 +31,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import rs.edu.raf.rma.showtime.movies.list.MoviesListContract
-import rs.edu.raf.rma.showtime.movies.list.MoviesListViewModel
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -43,7 +42,6 @@ fun FilterView(
     onUpdateYearRange: (String, String) -> Unit,
     onUpdateRating: (Float) -> Unit,
     onApplyFilters: () -> Unit,
-    viewModel: MoviesListViewModel,
 ) {
     Column(
         modifier = Modifier
@@ -64,13 +62,12 @@ fun FilterView(
 
         Text("GENRE", color = Color.White, fontWeight = FontWeight.Bold)
         FlowRow(modifier = Modifier.padding(vertical = 8.dp)) {
-            val genres = viewModel.getGenreList()
-            genres.forEach { genre ->
+            state.genres.forEach { genre ->
                 FilterChip(
                     modifier = Modifier.padding(end = 8.dp),
-                    selected = state.selectedGenre == genre,
-                    onClick = { onSelectGenre(genre) },
-                    label = { Text(genre) },
+                    selected = state.selectedGenre == genre.name,
+                    onClick = { onSelectGenre(genre.name) },
+                    label = { Text(genre.name) },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = Color.Red,
                         labelColor = Color.White

@@ -17,7 +17,6 @@ class MoviesListViewModel(
 ) : ViewModel() {
     private val _state = MutableStateFlow(MoviesListContract.UiState())
     val state = _state.asStateFlow()
-    val genreIds = HashMap<String, Int>()
 
     private fun setState(reducer: MoviesListContract.UiState.() -> MoviesListContract.UiState) {
         _state.getAndUpdate(reducer)
@@ -31,6 +30,7 @@ class MoviesListViewModel(
 
     init {
         observeEvents()
+        observeGenres()
         observeMovies()
         fetchData()
     }
@@ -106,6 +106,14 @@ class MoviesListViewModel(
         }
     }
 
+    private fun observeGenres() {
+        viewModelScope.launch {
+            showtimeRepository.observeGenres().collect { genres ->
+                setState { copy(genres = genres) }
+            }
+        }
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun observeMovies() {
         viewModelScope.launch {
@@ -147,13 +155,9 @@ class MoviesListViewModel(
         }
     }
 
-    fun getGenreList(): List<String> {
-        return genreIds.keys.toList()
-    }
-
     private fun getGenreId(genreName: String?): Int {
         if (genreName == null) return 0
-        return genreIds[genreName] ?: 0
+        return state.value.genres.find { it.name == genreName }?.id ?: 0
     }
 
     private fun getSortOrder(isAscending: Boolean): String {

@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.map
 import rs.edu.raf.rma.core.db.AppDatabase
 import rs.edu.raf.rma.networking.MoviesApi
 import rs.edu.raf.rma.showtime.db.MovieGenreCrossRef
+import rs.edu.raf.rma.showtime.domain.Genre
 import rs.edu.raf.rma.showtime.domain.Movie
 import rs.edu.raf.rma.showtime.domain.ShowtimeRepository
 
@@ -31,6 +32,11 @@ class ShowtimeRepositoryImpl(
                 sortBy = sortBy,
                 sortOrder = sortOrder,
             )
+            .map { rows -> rows.map { it.toDomain() } }
+
+    override fun observeGenres(): Flow<List<Genre>> =
+        appDatabase.showtimeDao()
+            .observeGenres()
             .map { rows -> rows.map { it.toDomain() } }
 
     override suspend fun refreshMovies() {
