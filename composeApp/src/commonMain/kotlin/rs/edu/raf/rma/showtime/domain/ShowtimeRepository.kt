@@ -12,6 +12,7 @@ interface ShowtimeRepository {
         sortBy: String,
         sortOrder: String,
     ): Flow<List<Movie>>
+    fun observeMovie(id: String): Flow<Movie?>
     fun observeGenres(): Flow<List<Genre>>
     suspend fun refreshMovies()
 }

@@ -24,11 +24,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import rs.edu.raf.rma.networking.model.MovieDetailsApiModel
+import rs.edu.raf.rma.showtime.domain.Movie
 import kotlin.math.roundToInt
 
 @Composable
-fun RatingInfoRow(movie: MovieDetailsApiModel) {
+fun RatingInfoRow(movie: Movie) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -81,7 +81,7 @@ fun RatingInfoRow(movie: MovieDetailsApiModel) {
 }
 
 @Composable
-fun InfoGrid(movie: MovieDetailsApiModel) {
+fun InfoGrid(movie: Movie) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

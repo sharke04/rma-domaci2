@@ -13,10 +13,12 @@ import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import rs.edu.raf.rma.networking.MoviesApi
 import rs.edu.raf.rma.networking.model.ApiErrorResponse
+import rs.edu.raf.rma.showtime.domain.ShowtimeRepository
 import rs.edu.raf.rma.showtime.movieIdOrThrow
 
 class MovieDetailsViewModel(
     private val savedStateHandle: SavedStateHandle,
+    private val showtimeRepository: ShowtimeRepository,
     private val moviesApi: MoviesApi,
 ) : ViewModel() {
     private val _state = MutableStateFlow(MovieDetailsContract.UiState())
@@ -29,7 +31,16 @@ class MovieDetailsViewModel(
     private val movieId: String = savedStateHandle.movieIdOrThrow
 
     init {
+        observeMovie()
         loadMovieDetails()
+    }
+
+    private fun observeMovie() {
+        viewModelScope.launch {
+            showtimeRepository.observeMovie(movieId).collect { movie ->
+                setState { copy(movie = movie) }
+            }
+        }
     }
 
     fun loadMovieDetails() {
@@ -37,12 +48,10 @@ class MovieDetailsViewModel(
             setState { copy(isLoading = true, error = null) }
             try {
                 coroutineScope {
-                    val detailsDeferred = async { moviesApi.getMovieDetails(movieId) }
                     val imagesDeferred = async { moviesApi.getMovieImages(movieId) }
                     val actorsDeferred = async { moviesApi.getMovieCast(id = movieId, pageSize = 10) }
                     val videosDeferred = async { moviesApi.getMovieVideos(id = movieId, type = "Trailer") }
 
-                    val details = detailsDeferred.await()
                     val images = imagesDeferred.await()
                     val actors = actorsDeferred.await()
                     val videos = videosDeferred.await()
@@ -50,7 +59,6 @@ class MovieDetailsViewModel(
                     setState {
                         copy(
                             isLoading = false,
-                            movie = details,
                             images = images.backdrops.take(6),
                             actors = actors.items,
                             video = videos.firstOrNull()

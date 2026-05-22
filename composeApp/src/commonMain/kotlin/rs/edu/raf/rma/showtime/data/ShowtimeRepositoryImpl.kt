@@ -34,6 +34,11 @@ class ShowtimeRepositoryImpl(
             )
             .map { rows -> rows.map { it.toDomain() } }
 
+    override fun observeMovie(id: String): Flow<Movie?> =
+        appDatabase.showtimeDao()
+            .observeMovie(id)
+            .map { it?.toDomain() }
+
     override fun observeGenres(): Flow<List<Genre>> =
         appDatabase.showtimeDao()
             .observeGenres()

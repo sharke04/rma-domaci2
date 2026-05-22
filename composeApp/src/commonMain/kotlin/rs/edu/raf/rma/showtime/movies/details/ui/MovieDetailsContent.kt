@@ -43,13 +43,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import rs.edu.raf.rma.networking.model.ImageApiModel
-import rs.edu.raf.rma.networking.model.MovieDetailsApiModel
 import rs.edu.raf.rma.networking.model.PersonSummaryApiModel
 import rs.edu.raf.rma.networking.model.VideoApiModel
+import rs.edu.raf.rma.showtime.domain.Movie
 
 @Composable
 fun MovieDetailsContent(
-    movie: MovieDetailsApiModel,
+    movie: Movie,
     images: List<ImageApiModel>,
     actors: List<PersonSummaryApiModel>,
     video: VideoApiModel?,
