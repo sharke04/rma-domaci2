@@ -1,4 +1,4 @@
-package rs.edu.raf.rma.premiere.list.ui
+package rs.edu.raf.rma.showtime.movies.list.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -31,8 +31,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import rs.edu.raf.rma.premiere.list.MoviesListContract
-import rs.edu.raf.rma.premiere.list.MoviesListViewModel
+import rs.edu.raf.rma.showtime.movies.list.MoviesListContract
+import rs.edu.raf.rma.showtime.movies.list.MoviesListViewModel
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalLayoutApi::class)

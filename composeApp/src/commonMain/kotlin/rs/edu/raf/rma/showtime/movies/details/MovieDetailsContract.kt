@@ -1,4 +1,4 @@
-package rs.edu.raf.rma.premiere.details
+package rs.edu.raf.rma.showtime.movies.details
 
 import rs.edu.raf.rma.networking.model.ImageApiModel
 import rs.edu.raf.rma.networking.model.MovieDetailsApiModel

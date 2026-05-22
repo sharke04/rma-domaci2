@@ -4,7 +4,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import rs.edu.raf.rma.core.db.AppDatabase
 import rs.edu.raf.rma.networking.MoviesApi
-import rs.edu.raf.rma.posts.domain.Post
 import rs.edu.raf.rma.showtime.db.MovieEntity
 import rs.edu.raf.rma.showtime.domain.Movie
 import rs.edu.raf.rma.showtime.domain.ShowtimeRepository
@@ -13,9 +12,25 @@ class ShowtimeRepositoryImpl(
     private val appDatabase: AppDatabase,
     private val moviesApi: MoviesApi,
 ) : ShowtimeRepository {
-    override fun observeMovies(): Flow<List<Movie>> =
+    override fun observeMovies(
+        name: String,
+        genreId: Int,
+        minYear: Int,
+        maxYear: Int,
+        minRating: Float,
+        sortBy: String,
+        sortOrder: String
+    ): Flow<List<Movie>> =
         appDatabase.showtimeDao()
-            .observeMovies()
+            .observeMovies(
+                name = name,
+                genreId = genreId,
+                minYear = minYear,
+                maxYear = maxYear,
+                minRating = minRating,
+                sortBy = sortBy,
+                sortOrder = sortOrder,
+            )
             .map { rows -> rows.map { it.toDomain() } }
 
     override suspend fun refreshMovies() {

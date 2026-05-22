@@ -1,4 +1,4 @@
-package rs.edu.raf.rma.premiere.details.ui
+package rs.edu.raf.rma.showtime.movies.details.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

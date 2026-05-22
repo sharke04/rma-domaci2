@@ -1,4 +1,4 @@
-package rs.edu.raf.rma.premiere.list.ui
+package rs.edu.raf.rma.showtime.movies.list.ui
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background

@@ -1,4 +1,4 @@
-package rs.edu.raf.rma.premiere.details.ui
+package rs.edu.raf.rma.showtime.movies.details.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import rs.edu.raf.rma.premiere.details.MovieDetailsViewModel
+import rs.edu.raf.rma.showtime.movies.details.MovieDetailsViewModel
 
 @Composable
 fun MovieDetailsScreen(

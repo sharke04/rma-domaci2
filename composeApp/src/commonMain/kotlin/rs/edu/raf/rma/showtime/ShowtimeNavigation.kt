@@ -9,10 +9,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import org.koin.compose.viewmodel.koinViewModel
-import rs.edu.raf.rma.premiere.details.MovieDetailsViewModel
-import rs.edu.raf.rma.premiere.details.ui.MovieDetailsScreen
-import rs.edu.raf.rma.premiere.list.MoviesListViewModel
-import rs.edu.raf.rma.premiere.list.ui.MoviesListScreen
+import rs.edu.raf.rma.showtime.movies.details.MovieDetailsViewModel
+import rs.edu.raf.rma.showtime.movies.details.ui.MovieDetailsScreen
+import rs.edu.raf.rma.showtime.movies.list.MoviesListViewModel
+import rs.edu.raf.rma.showtime.movies.list.ui.MoviesListScreen
 
 @Composable
 fun ShowtimeNavigation(

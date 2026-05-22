@@ -1,10 +1,13 @@
-package rs.edu.raf.rma.premiere.list
+package rs.edu.raf.rma.showtime.movies.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import rs.edu.raf.rma.showtime.domain.ShowtimeRepository
@@ -103,9 +106,30 @@ class MoviesListViewModel(
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun observeMovies() {
         viewModelScope.launch {
-            showtimeRepository.observeMovies()
+            state
+                .distinctUntilChanged { old, new ->
+                    old.activeSearchTitle == new.activeSearchTitle &&
+                    old.activeSelectedGenre == new.activeSelectedGenre &&
+                    old.activeYearFrom == new.activeYearFrom &&
+                    old.activeYearTo == new.activeYearTo &&
+                    old.activeMinRating == new.activeMinRating &&
+                    old.sortBy == new.sortBy &&
+                    old.isAscending == new.isAscending
+                }
+                .flatMapLatest { s ->
+                    showtimeRepository.observeMovies(
+                        name = s.activeSearchTitle,
+                        genreId = getGenreId(s.activeSelectedGenre),
+                        minYear = s.activeYearFrom.toIntOrNull() ?: 1920,
+                        maxYear = s.activeYearTo.toIntOrNull() ?: 2025,
+                        minRating = s.activeMinRating,
+                        sortBy = s.sortBy,
+                        sortOrder = getSortOrder(s.isAscending),
+                    )
+                }
                 .collect { movies ->
                     setState { copy(movies = movies) }
                 }
@@ -125,5 +149,14 @@ class MoviesListViewModel(
 
     fun getGenreList(): List<String> {
         return genreIds.keys.toList()
+    }
+
+    private fun getGenreId(genreName: String?): Int {
+        if (genreName == null) return 0
+        return genreIds[genreName] ?: 0
+    }
+
+    private fun getSortOrder(isAscending: Boolean): String {
+        return if (isAscending) "asc" else "desc"
     }
 }

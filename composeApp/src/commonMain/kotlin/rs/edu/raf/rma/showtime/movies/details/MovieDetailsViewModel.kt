@@ -1,4 +1,4 @@
-package rs.edu.raf.rma.premiere.details
+package rs.edu.raf.rma.showtime.movies.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

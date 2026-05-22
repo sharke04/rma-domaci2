@@ -1,4 +1,4 @@
-package rs.edu.raf.rma.premiere.list.ui
+package rs.edu.raf.rma.showtime.movies.list.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,9 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import rs.edu.raf.rma.networking.model.MovieListItemApiModel
 import rs.edu.raf.rma.showtime.domain.Movie
-import kotlin.toString
 
 @Composable
 fun MovieListItem(

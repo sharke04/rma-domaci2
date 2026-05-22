@@ -1,10 +1,12 @@
-package rs.edu.raf.rma.premiere.list
+package rs.edu.raf.rma.showtime.movies.list
 
+import rs.edu.raf.rma.showtime.domain.Genre
 import rs.edu.raf.rma.showtime.domain.Movie
 
 interface MoviesListContract {
     data class UiState(
         val movies: List<Movie> = emptyList(),
+        val genres: List<Genre> = emptyList(),
         val isLoading: Boolean = true,
         val error: Throwable? = null,
         val sortBy: String = "Rating",
@@ -21,7 +23,7 @@ interface MoviesListContract {
         val activeSelectedGenre: String? = null,
         val activeYearFrom: String = "1920",
         val activeYearTo: String = "2025",
-        val activeMinRating: Float = 0f
+        val activeMinRating: Float = 0f,
     )
     sealed class UiEvent {
         data class OnSortChanged(val sortField: String) : UiEvent()
