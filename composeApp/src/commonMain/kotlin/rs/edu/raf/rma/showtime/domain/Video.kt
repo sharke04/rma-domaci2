@@ -1,7 +1,6 @@
 package rs.edu.raf.rma.showtime.domain
 
 data class Video(
-    val id: Int,
     val key: String,
     val site: String,
     val name: String? = null,

@@ -9,6 +9,7 @@ import rs.edu.raf.rma.showtime.domain.Genre
 import rs.edu.raf.rma.showtime.domain.Image
 import rs.edu.raf.rma.showtime.domain.Movie
 import rs.edu.raf.rma.showtime.domain.ShowtimeRepository
+import rs.edu.raf.rma.showtime.domain.Video
 
 class ShowtimeRepositoryImpl(
     private val appDatabase: AppDatabase,
@@ -55,10 +56,22 @@ class ShowtimeRepositoryImpl(
         appDatabase.showtimeDao().upsertMovies(listOf(details.toMovieEntity()))
     }
 
+    override fun observeMovieVideo(movieId: String): Flow<Video?> =
+        appDatabase.showtimeDao()
+            .observeMovieVideo(movieId)
+            .map { it?.toDomain() }
+
     override suspend fun refreshMovieImages(movieId: String) {
         val images = moviesApi.getMovieImages(movieId)
         appDatabase.showtimeDao().upsertImages(
             images.backdrops.take(6).map { it.toEntity(movieId) }
+        )
+    }
+
+    override suspend fun refreshMovieVideos(movieId: String) {
+        val videos = moviesApi.getMovieVideos(id = movieId, type = "Trailer")
+        appDatabase.showtimeDao().upsertVideos(
+            videos.map { it.toEntity(movieId) }
         )
     }
 

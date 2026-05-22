@@ -4,13 +4,16 @@ import rs.edu.raf.rma.networking.model.GenreApiModel
 import rs.edu.raf.rma.networking.model.ImageApiModel
 import rs.edu.raf.rma.networking.model.MovieDetailsApiModel
 import rs.edu.raf.rma.networking.model.MovieListItemApiModel
+import rs.edu.raf.rma.networking.model.VideoApiModel
 import rs.edu.raf.rma.showtime.db.GenreEntity
 import rs.edu.raf.rma.showtime.db.ImageEntity
 import rs.edu.raf.rma.showtime.db.MovieEntity
 import rs.edu.raf.rma.showtime.db.MovieWithGenres
+import rs.edu.raf.rma.showtime.db.VideoEntity
 import rs.edu.raf.rma.showtime.domain.Genre
 import rs.edu.raf.rma.showtime.domain.Image
 import rs.edu.raf.rma.showtime.domain.Movie
+import rs.edu.raf.rma.showtime.domain.Video
 
 fun MovieListItemApiModel.toMovieEntity() = MovieEntity(
     id = imdbId,
@@ -75,6 +78,25 @@ fun ImageEntity.toDomain() = Image(
     height = height,
     voteAverage = voteAverage,
     language = language,
+)
+
+fun VideoApiModel.toEntity(movieId: String) = VideoEntity(
+    key = key,
+    movieId = movieId,
+    site = site,
+    name = name,
+    type = type,
+    official = official,
+    publishedAt = publishedAt,
+)
+
+fun VideoEntity.toDomain() = Video(
+    key = key,
+    site = site,
+    name = name,
+    type = type,
+    official = official,
+    publishedAt = publishedAt,
 )
 
 fun GenreEntity.toDomain() = Genre(id = id, name = name)

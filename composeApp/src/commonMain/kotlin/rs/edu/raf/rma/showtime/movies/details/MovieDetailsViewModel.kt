@@ -33,6 +33,7 @@ class MovieDetailsViewModel(
     init {
         observeMovie()
         observeMovieImages()
+        observeMovieVideo()
         loadMovieDetails()
     }
 
@@ -52,6 +53,14 @@ class MovieDetailsViewModel(
         }
     }
 
+    private fun observeMovieVideo() {
+        viewModelScope.launch {
+            showtimeRepository.observeMovieVideo(movieId).collect { video ->
+                setState { copy(video = video) }
+            }
+        }
+    }
+
     fun loadMovieDetails() {
         viewModelScope.launch {
             setState { copy(isLoading = true, error = null) }
@@ -59,19 +68,18 @@ class MovieDetailsViewModel(
                 coroutineScope {
                     val detailsDeferred = async { showtimeRepository.refreshMovieDetails(movieId) }
                     val imagesDeferred = async { showtimeRepository.refreshMovieImages(movieId) }
+                    val videosDeferred = async { showtimeRepository.refreshMovieVideos(movieId) }
                     val actorsDeferred = async { moviesApi.getMovieCast(id = movieId, pageSize = 10) }
-                    val videosDeferred = async { moviesApi.getMovieVideos(id = movieId, type = "Trailer") }
 
                     detailsDeferred.await()
                     imagesDeferred.await()
+                    videosDeferred.await()
                     val actors = actorsDeferred.await()
-                    val videos = videosDeferred.await()
 
                     setState {
                         copy(
                             isLoading = false,
                             actors = actors.items,
-                            video = videos.firstOrNull()
                         )
                     }
                 }

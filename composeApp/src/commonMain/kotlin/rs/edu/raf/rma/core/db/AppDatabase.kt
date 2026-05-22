@@ -18,6 +18,7 @@ import rs.edu.raf.rma.showtime.db.ImageEntity
 import rs.edu.raf.rma.showtime.db.MovieEntity
 import rs.edu.raf.rma.showtime.db.MovieGenreCrossRef
 import rs.edu.raf.rma.showtime.db.ShowtimeDao
+import rs.edu.raf.rma.showtime.db.VideoEntity
 
 @Database(
     entities = [
@@ -29,6 +30,7 @@ import rs.edu.raf.rma.showtime.db.ShowtimeDao
         GenreEntity::class,
         MovieGenreCrossRef::class,
         ImageEntity::class,
+        VideoEntity::class,
     ],
     version = 2,
     exportSchema = true,

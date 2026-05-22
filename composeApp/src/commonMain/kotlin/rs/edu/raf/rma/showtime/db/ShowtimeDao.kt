@@ -23,6 +23,12 @@ interface ShowtimeDao {
     @Query("SELECT * FROM images WHERE movieId = :movieId")
     fun observeMovieImages(movieId: String): Flow<List<ImageEntity>>
 
+    @Upsert
+    suspend fun upsertVideos(videos: List<VideoEntity>)
+
+    @Query("SELECT * FROM videos WHERE movieId = :movieId LIMIT 1")
+    fun observeMovieVideo(movieId: String): Flow<VideoEntity?>
+
     @Transaction
     @Query("SELECT * FROM movies WHERE id = :id")
     fun observeMovie(id: String): Flow<MovieWithGenres?>
