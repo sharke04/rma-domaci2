@@ -14,8 +14,8 @@ import rs.edu.raf.rma.networking.model.VideoApiModel
 interface MoviesApi {
     @GET("movies")
     suspend fun getMovies(
-        @Query("page") page: Int = 1,
-        @Query("page_size") pageSize: Int = 20,
+        @Query("page") page: Int? = null,
+        @Query("page_size") pageSize: Int? = null,
         @Query("query") query: String? = null,
         @Query("genre_id") genreId: Int? = null,
         @Query("min_year") minYear: Int? = null,

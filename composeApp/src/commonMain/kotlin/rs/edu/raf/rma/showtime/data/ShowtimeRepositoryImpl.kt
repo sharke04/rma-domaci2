@@ -45,13 +45,20 @@ class ShowtimeRepositoryImpl(
             .map { rows -> rows.map { it.toDomain() } }
 
     override suspend fun refreshMovies() {
-        val response = moviesApi.getMovies()
-        val details = response.items.map { moviesApi.getMovieDetails(it.imdbId) }
+        val allItems = buildList {
+            var page = 1
+            do {
+                val response = moviesApi.getMovies(page = page, pageSize = 100)
+                addAll(response.items)
+                page++
+            } while (page <= response.totalPages)
+        }
+
         val genres = moviesApi.getGenres()
 
-        val movieEntities = details.map { it.toMovieEntity() }
+        val movieEntities = allItems.map { it.toMovieEntity() }
         val genreEntities = genres.map { it.toEntity() }
-        val crossRefs = details.flatMap { movie ->
+        val crossRefs = allItems.flatMap { movie ->
             movie.genres.map { genre -> MovieGenreCrossRef(movieId = movie.imdbId, genreId = genre.id) }
         }
 

@@ -2,11 +2,35 @@ package rs.edu.raf.rma.showtime.data
 
 import rs.edu.raf.rma.networking.model.GenreApiModel
 import rs.edu.raf.rma.networking.model.MovieDetailsApiModel
+import rs.edu.raf.rma.networking.model.MovieListItemApiModel
 import rs.edu.raf.rma.showtime.db.GenreEntity
 import rs.edu.raf.rma.showtime.db.MovieEntity
 import rs.edu.raf.rma.showtime.db.MovieWithGenres
 import rs.edu.raf.rma.showtime.domain.Genre
 import rs.edu.raf.rma.showtime.domain.Movie
+
+fun MovieListItemApiModel.toMovieEntity() = MovieEntity(
+    id = imdbId,
+    tmdbId = null,
+    title = title,
+    originalTitle = null,
+    overview = null,
+    tagline = null,
+    releaseDate = null,
+    year = year,
+    runtime = null,
+    budget = null,
+    revenue = null,
+    languageCode = null,
+    popularity = null,
+    imdbRating = imdbRating,
+    imdbVotes = imdbVotes,
+    tmdbRating = null,
+    tmdbVotes = null,
+    posterPath = posterPath,
+    backdropPath = null,
+    homepage = null,
+)
 
 fun MovieDetailsApiModel.toMovieEntity() = MovieEntity(
     id = imdbId,
