@@ -14,6 +14,7 @@ import rs.edu.raf.rma.posts.db.PostDao
 import rs.edu.raf.rma.posts.db.PostDetailsEntity
 import rs.edu.raf.rma.posts.db.PostEntity
 import rs.edu.raf.rma.showtime.db.GenreEntity
+import rs.edu.raf.rma.showtime.db.ImageEntity
 import rs.edu.raf.rma.showtime.db.MovieEntity
 import rs.edu.raf.rma.showtime.db.MovieGenreCrossRef
 import rs.edu.raf.rma.showtime.db.ShowtimeDao
@@ -27,6 +28,7 @@ import rs.edu.raf.rma.showtime.db.ShowtimeDao
         MovieEntity::class,
         GenreEntity::class,
         MovieGenreCrossRef::class,
+        ImageEntity::class,
     ],
     version = 2,
     exportSchema = true,

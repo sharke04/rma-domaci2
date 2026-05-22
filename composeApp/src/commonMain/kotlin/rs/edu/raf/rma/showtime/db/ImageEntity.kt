@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "images")
 data class ImageEntity(
-    @PrimaryKey val id: Int,
-    val filePath: String,
+    @PrimaryKey val filePath: String,
+    val movieId: String,
     val width: Int? = null,
     val height: Int? = null,
     val voteAverage: Float? = null,

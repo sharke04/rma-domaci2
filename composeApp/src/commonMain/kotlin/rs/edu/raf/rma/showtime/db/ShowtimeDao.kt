@@ -17,6 +17,12 @@ interface ShowtimeDao {
     @Upsert
     suspend fun upsertMovieGenreCrossRefs(crossRefs: List<MovieGenreCrossRef>)
 
+    @Upsert
+    suspend fun upsertImages(images: List<ImageEntity>)
+
+    @Query("SELECT * FROM images WHERE movieId = :movieId")
+    fun observeMovieImages(movieId: String): Flow<List<ImageEntity>>
+
     @Transaction
     @Query("SELECT * FROM movies WHERE id = :id")
     fun observeMovie(id: String): Flow<MovieWithGenres?>

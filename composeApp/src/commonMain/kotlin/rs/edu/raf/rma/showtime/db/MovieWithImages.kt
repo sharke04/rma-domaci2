@@ -6,8 +6,8 @@ import androidx.room.Relation
 data class MovieWithImages(
     @Embedded val movie: MovieEntity,
     @Relation(
-        parentColumn = "movieId",
-        entityColumn = "imageId",
+        parentColumn = "id",
+        entityColumn = "movieId",
     )
     val images: List<ImageEntity>,
 )

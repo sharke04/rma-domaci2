@@ -6,6 +6,7 @@ import rs.edu.raf.rma.core.db.AppDatabase
 import rs.edu.raf.rma.networking.MoviesApi
 import rs.edu.raf.rma.showtime.db.MovieGenreCrossRef
 import rs.edu.raf.rma.showtime.domain.Genre
+import rs.edu.raf.rma.showtime.domain.Image
 import rs.edu.raf.rma.showtime.domain.Movie
 import rs.edu.raf.rma.showtime.domain.ShowtimeRepository
 
@@ -43,6 +44,23 @@ class ShowtimeRepositoryImpl(
         appDatabase.showtimeDao()
             .observeGenres()
             .map { rows -> rows.map { it.toDomain() } }
+
+    override fun observeMovieImages(movieId: String): Flow<List<Image>> =
+        appDatabase.showtimeDao()
+            .observeMovieImages(movieId)
+            .map { rows -> rows.map { it.toDomain() } }
+
+    override suspend fun refreshMovieDetails(movieId: String) {
+        val details = moviesApi.getMovieDetails(movieId)
+        appDatabase.showtimeDao().upsertMovies(listOf(details.toMovieEntity()))
+    }
+
+    override suspend fun refreshMovieImages(movieId: String) {
+        val images = moviesApi.getMovieImages(movieId)
+        appDatabase.showtimeDao().upsertImages(
+            images.backdrops.take(6).map { it.toEntity(movieId) }
+        )
+    }
 
     override suspend fun refreshMovies() {
         val allItems = buildList {

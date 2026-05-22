@@ -42,15 +42,15 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import rs.edu.raf.rma.networking.model.ImageApiModel
 import rs.edu.raf.rma.networking.model.PersonSummaryApiModel
 import rs.edu.raf.rma.networking.model.VideoApiModel
+import rs.edu.raf.rma.showtime.domain.Image
 import rs.edu.raf.rma.showtime.domain.Movie
 
 @Composable
 fun MovieDetailsContent(
     movie: Movie,
-    images: List<ImageApiModel>,
+    images: List<Image>,
     actors: List<PersonSummaryApiModel>,
     video: VideoApiModel?,
     onBack: () -> Unit

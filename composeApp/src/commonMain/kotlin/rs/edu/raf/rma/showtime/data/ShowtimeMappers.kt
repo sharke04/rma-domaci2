@@ -1,12 +1,15 @@
 package rs.edu.raf.rma.showtime.data
 
 import rs.edu.raf.rma.networking.model.GenreApiModel
+import rs.edu.raf.rma.networking.model.ImageApiModel
 import rs.edu.raf.rma.networking.model.MovieDetailsApiModel
 import rs.edu.raf.rma.networking.model.MovieListItemApiModel
 import rs.edu.raf.rma.showtime.db.GenreEntity
+import rs.edu.raf.rma.showtime.db.ImageEntity
 import rs.edu.raf.rma.showtime.db.MovieEntity
 import rs.edu.raf.rma.showtime.db.MovieWithGenres
 import rs.edu.raf.rma.showtime.domain.Genre
+import rs.edu.raf.rma.showtime.domain.Image
 import rs.edu.raf.rma.showtime.domain.Movie
 
 fun MovieListItemApiModel.toMovieEntity() = MovieEntity(
@@ -56,6 +59,23 @@ fun MovieDetailsApiModel.toMovieEntity() = MovieEntity(
 )
 
 fun GenreApiModel.toEntity() = GenreEntity(id = id, name = name)
+
+fun ImageApiModel.toEntity(movieId: String) = ImageEntity(
+    movieId = movieId,
+    filePath = filePath,
+    width = width,
+    height = height,
+    voteAverage = voteAverage,
+    language = language,
+)
+
+fun ImageEntity.toDomain() = Image(
+    filePath = filePath,
+    width = width,
+    height = height,
+    voteAverage = voteAverage,
+    language = language,
+)
 
 fun GenreEntity.toDomain() = Genre(id = id, name = name)
 
