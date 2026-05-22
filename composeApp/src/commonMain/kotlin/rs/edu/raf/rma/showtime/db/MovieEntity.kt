@@ -2,8 +2,6 @@ package rs.edu.raf.rma.showtime.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import rs.edu.raf.rma.networking.model.CollectionApiModel
-import rs.edu.raf.rma.networking.model.GenreApiModel
 
 @Entity(tableName = "movies")
 data class MovieEntity(
@@ -27,6 +25,4 @@ data class MovieEntity(
     val posterPath: String?,
     val backdropPath: String?,
     val homepage: String?,
-    val genres: List<GenreApiModel>,
-    val collection: CollectionApiModel?,
 )

@@ -1,10 +1,14 @@
 package rs.edu.raf.rma.showtime.data
 
+import rs.edu.raf.rma.networking.model.GenreApiModel
 import rs.edu.raf.rma.networking.model.MovieDetailsApiModel
+import rs.edu.raf.rma.showtime.db.GenreEntity
 import rs.edu.raf.rma.showtime.db.MovieEntity
+import rs.edu.raf.rma.showtime.db.MovieWithGenres
+import rs.edu.raf.rma.showtime.domain.Genre
 import rs.edu.raf.rma.showtime.domain.Movie
 
-fun MovieDetailsApiModel.toMovieEntity() : MovieEntity = MovieEntity(
+fun MovieDetailsApiModel.toMovieEntity() = MovieEntity(
     id = imdbId,
     tmdbId = tmdbId,
     title = title,
@@ -25,31 +29,32 @@ fun MovieDetailsApiModel.toMovieEntity() : MovieEntity = MovieEntity(
     posterPath = posterPath,
     backdropPath = backdropPath,
     homepage = homepage,
-    genres = genres,
-    collection = collection,
 )
 
-fun MovieEntity.toDomain(): Movie = Movie(
-    id = id,
-    tmdbId = tmdbId,
-    title = title,
-    originalTitle = originalTitle,
-    overview = overview,
-    tagline = tagline,
-    releaseDate = releaseDate,
-    year = year,
-    runtime = runtime,
-    budget = budget,
-    revenue = revenue,
-    languageCode = languageCode,
-    popularity = popularity,
-    imdbRating = imdbRating,
-    imdbVotes = imdbVotes,
-    tmdbRating = tmdbRating,
-    tmdbVotes = tmdbVotes,
-    posterPath = posterPath,
-    backdropPath = backdropPath,
-    homepage = homepage,
-    genres = genres,
-    collection = collection,
+fun GenreApiModel.toEntity() = GenreEntity(id = id, name = name)
+
+fun GenreEntity.toDomain() = Genre(id = id, name = name)
+
+fun MovieWithGenres.toDomain() = Movie(
+    id = movie.id,
+    tmdbId = movie.tmdbId,
+    title = movie.title,
+    originalTitle = movie.originalTitle,
+    overview = movie.overview,
+    tagline = movie.tagline,
+    releaseDate = movie.releaseDate,
+    year = movie.year,
+    runtime = movie.runtime,
+    budget = movie.budget,
+    revenue = movie.revenue,
+    languageCode = movie.languageCode,
+    popularity = movie.popularity,
+    imdbRating = movie.imdbRating,
+    imdbVotes = movie.imdbVotes,
+    tmdbRating = movie.tmdbRating,
+    tmdbVotes = movie.tmdbVotes,
+    posterPath = movie.posterPath,
+    backdropPath = movie.backdropPath,
+    homepage = movie.homepage,
+    genres = genres.map { it.toDomain() },
 )

@@ -30,7 +30,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import rs.edu.raf.rma.showtime.movies.list.MoviesListContract
 import rs.edu.raf.rma.showtime.movies.list.MoviesListViewModel
 import kotlin.math.roundToInt

@@ -44,7 +44,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import rs.edu.raf.rma.showtime.movies.list.MoviesListContract
 import rs.edu.raf.rma.showtime.movies.list.MoviesListViewModel
-import kotlin.toString
 
 @Composable
 fun MoviesListScreen(

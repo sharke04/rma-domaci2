@@ -8,13 +8,14 @@ import androidx.room.TypeConverters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import rs.edu.raf.rma.core.db.converters.DateConverters
-import rs.edu.raf.rma.core.db.converters.MovieConverters
 import rs.edu.raf.rma.posts.db.CategoryEntity
 import rs.edu.raf.rma.posts.db.PostCategoryCrossRef
 import rs.edu.raf.rma.posts.db.PostDao
 import rs.edu.raf.rma.posts.db.PostDetailsEntity
 import rs.edu.raf.rma.posts.db.PostEntity
+import rs.edu.raf.rma.showtime.db.GenreEntity
 import rs.edu.raf.rma.showtime.db.MovieEntity
+import rs.edu.raf.rma.showtime.db.MovieGenreCrossRef
 import rs.edu.raf.rma.showtime.db.ShowtimeDao
 
 @Database(
@@ -24,11 +25,13 @@ import rs.edu.raf.rma.showtime.db.ShowtimeDao
         CategoryEntity::class,
         PostCategoryCrossRef::class,
         MovieEntity::class,
+        GenreEntity::class,
+        MovieGenreCrossRef::class,
     ],
-    version = 1,
+    version = 2,
     exportSchema = true,
 )
-@TypeConverters(DateConverters::class, MovieConverters::class)
+@TypeConverters(DateConverters::class)
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun postDao(): PostDao
@@ -46,6 +49,7 @@ fun buildAppDatabase(
     builder: RoomDatabase.Builder<AppDatabase>,
 ): AppDatabase {
     return builder
+        .fallbackToDestructiveMigration(dropAllTables = true)
         .fallbackToDestructiveMigrationOnDowngrade(dropAllTables = true)
         .setQueryCoroutineContext(Dispatchers.IO)
         .build()

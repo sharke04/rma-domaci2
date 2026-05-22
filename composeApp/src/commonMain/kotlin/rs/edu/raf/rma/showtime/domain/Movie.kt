@@ -1,8 +1,5 @@
 package rs.edu.raf.rma.showtime.domain
 
-import rs.edu.raf.rma.networking.model.CollectionApiModel
-import rs.edu.raf.rma.networking.model.GenreApiModel
-
 data class Movie(
     val id: String,
     val tmdbId: Int?,
@@ -24,6 +21,5 @@ data class Movie(
     val posterPath: String?,
     val backdropPath: String?,
     val homepage: String?,
-    val genres: List<GenreApiModel>,
-    val collection: CollectionApiModel?,
+    val genres: List<Genre>,
 )
