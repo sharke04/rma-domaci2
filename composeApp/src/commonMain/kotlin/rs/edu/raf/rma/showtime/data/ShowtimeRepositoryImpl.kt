@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.map
 import rs.edu.raf.rma.core.db.AppDatabase
 import rs.edu.raf.rma.networking.MoviesApi
 import rs.edu.raf.rma.showtime.db.MovieGenreCrossRef
+import rs.edu.raf.rma.showtime.domain.Actor
 import rs.edu.raf.rma.showtime.domain.Genre
 import rs.edu.raf.rma.showtime.domain.Image
 import rs.edu.raf.rma.showtime.domain.Movie
@@ -72,6 +73,18 @@ class ShowtimeRepositoryImpl(
         val videos = moviesApi.getMovieVideos(id = movieId, type = "Trailer")
         appDatabase.showtimeDao().upsertVideos(
             videos.map { it.toEntity(movieId) }
+        )
+    }
+
+    override fun observeMovieActors(movieId: String): Flow<List<Actor>> =
+        appDatabase.showtimeDao()
+            .observeMovieActors(movieId)
+            .map { rows -> rows.map { it.toDomain() } }
+
+    override suspend fun refreshMovieActors(movieId: String) {
+        val actors = moviesApi.getMovieCast(id = movieId, pageSize = 10)
+        appDatabase.showtimeDao().upsertActors(
+            actors.items.map { it.toEntity(movieId) }
         )
     }
 

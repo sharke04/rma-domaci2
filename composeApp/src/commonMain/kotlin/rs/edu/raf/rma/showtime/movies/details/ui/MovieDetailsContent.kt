@@ -42,7 +42,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import rs.edu.raf.rma.networking.model.PersonSummaryApiModel
+import rs.edu.raf.rma.showtime.domain.Actor
 import rs.edu.raf.rma.showtime.domain.Image
 import rs.edu.raf.rma.showtime.domain.Movie
 import rs.edu.raf.rma.showtime.domain.Video
@@ -51,7 +51,7 @@ import rs.edu.raf.rma.showtime.domain.Video
 fun MovieDetailsContent(
     movie: Movie,
     images: List<Image>,
-    actors: List<PersonSummaryApiModel>,
+    actors: List<Actor>,
     video: Video?,
     onBack: () -> Unit
 ) {

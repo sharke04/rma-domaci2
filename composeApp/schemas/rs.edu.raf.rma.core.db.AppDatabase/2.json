@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "b40fad33341cd30c64f508d75c813a2d",
+    "identityHash": "93ef213123d964ad1ce6942b95f23d86",
     "entities": [
       {
         "tableName": "posts",
@@ -451,11 +451,57 @@
             "key"
           ]
         }
+      },
+      {
+        "tableName": "actors",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`movieId` TEXT NOT NULL, `imdbId` TEXT NOT NULL, `name` TEXT NOT NULL, `professions` TEXT, `department` TEXT, `profilePath` TEXT, PRIMARY KEY(`movieId`, `imdbId`))",
+        "fields": [
+          {
+            "fieldPath": "movieId",
+            "columnName": "movieId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "imdbId",
+            "columnName": "imdbId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "professions",
+            "columnName": "professions",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "department",
+            "columnName": "department",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "profilePath",
+            "columnName": "profilePath",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "movieId",
+            "imdbId"
+          ]
+        }
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b40fad33341cd30c64f508d75c813a2d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '93ef213123d964ad1ce6942b95f23d86')"
     ]
   }
 }

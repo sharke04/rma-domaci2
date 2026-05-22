@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
-import rs.edu.raf.rma.networking.MoviesApi
 import rs.edu.raf.rma.networking.model.ApiErrorResponse
 import rs.edu.raf.rma.showtime.domain.ShowtimeRepository
 import rs.edu.raf.rma.showtime.movieIdOrThrow
@@ -19,7 +18,6 @@ import rs.edu.raf.rma.showtime.movieIdOrThrow
 class MovieDetailsViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val showtimeRepository: ShowtimeRepository,
-    private val moviesApi: MoviesApi,
 ) : ViewModel() {
     private val _state = MutableStateFlow(MovieDetailsContract.UiState())
     val state = _state.asStateFlow()
@@ -34,6 +32,7 @@ class MovieDetailsViewModel(
         observeMovie()
         observeMovieImages()
         observeMovieVideo()
+        observeMovieActors()
         loadMovieDetails()
     }
 
@@ -61,6 +60,14 @@ class MovieDetailsViewModel(
         }
     }
 
+    private fun observeMovieActors() {
+        viewModelScope.launch {
+            showtimeRepository.observeMovieActors(movieId).collect { actors ->
+                setState { copy(actors = actors) }
+            }
+        }
+    }
+
     fun loadMovieDetails() {
         viewModelScope.launch {
             setState { copy(isLoading = true, error = null) }
@@ -69,19 +76,14 @@ class MovieDetailsViewModel(
                     val detailsDeferred = async { showtimeRepository.refreshMovieDetails(movieId) }
                     val imagesDeferred = async { showtimeRepository.refreshMovieImages(movieId) }
                     val videosDeferred = async { showtimeRepository.refreshMovieVideos(movieId) }
-                    val actorsDeferred = async { moviesApi.getMovieCast(id = movieId, pageSize = 10) }
+                    val actorsDeferred = async { showtimeRepository.refreshMovieActors(movieId) }
 
                     detailsDeferred.await()
                     imagesDeferred.await()
                     videosDeferred.await()
-                    val actors = actorsDeferred.await()
+                    actorsDeferred.await()
 
-                    setState {
-                        copy(
-                            isLoading = false,
-                            actors = actors.items,
-                        )
-                    }
+                    setState { copy(isLoading = false) }
                 }
             } catch (e: Exception) {
                 val userMessage = when (e) {

@@ -13,6 +13,7 @@ import rs.edu.raf.rma.posts.db.PostCategoryCrossRef
 import rs.edu.raf.rma.posts.db.PostDao
 import rs.edu.raf.rma.posts.db.PostDetailsEntity
 import rs.edu.raf.rma.posts.db.PostEntity
+import rs.edu.raf.rma.showtime.db.ActorEntity
 import rs.edu.raf.rma.showtime.db.GenreEntity
 import rs.edu.raf.rma.showtime.db.ImageEntity
 import rs.edu.raf.rma.showtime.db.MovieEntity
@@ -31,6 +32,7 @@ import rs.edu.raf.rma.showtime.db.VideoEntity
         MovieGenreCrossRef::class,
         ImageEntity::class,
         VideoEntity::class,
+        ActorEntity::class,
     ],
     version = 2,
     exportSchema = true,
