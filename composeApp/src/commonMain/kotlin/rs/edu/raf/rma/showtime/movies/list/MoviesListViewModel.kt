@@ -144,6 +144,7 @@ class MoviesListViewModel(
         }
     }
 
+    // TODO: mozda ne bi trebalo da stoji ovde, vec da se podaci ucitavaju na samom pokretanju aplikacije, tako da bude nezavisno od ovog ekrana
     private fun fetchData() {
         viewModelScope.launch {
             setState { copy(isLoading = true, error = null) }

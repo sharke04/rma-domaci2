@@ -22,7 +22,6 @@ fun initKoin(config: KoinAppDeclaration? = null): KoinApplication {
             passwordsModule,
             postsModule,
             moviesModule,
-//            noviModule,
         )
     }
 }

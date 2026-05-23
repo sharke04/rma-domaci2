@@ -13,6 +13,7 @@ import rs.edu.raf.rma.showtime.movies.details.MovieDetailsViewModel
 import rs.edu.raf.rma.showtime.movies.details.ui.MovieDetailsScreen
 import rs.edu.raf.rma.showtime.movies.list.MoviesListViewModel
 import rs.edu.raf.rma.showtime.movies.list.ui.MoviesListScreen
+import rs.edu.raf.rma.showtime.welcome.ShowtimeWelcomeScreen
 
 @Composable
 fun ShowtimeNavigation(
@@ -25,6 +26,13 @@ fun ShowtimeNavigation(
         startDestination = startDestination,
     ) {
         composable(route = "welcome") {
+            ShowtimeWelcomeScreen(
+                onLoginClick = { navController.navigate("login") },
+                onMoviesClick = { navController.navigate("movies") }
+            )
+        }
+
+        composable(route = "login") {
 
         }
 
