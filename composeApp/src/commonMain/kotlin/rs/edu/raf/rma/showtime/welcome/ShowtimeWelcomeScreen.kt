@@ -2,7 +2,10 @@ package rs.edu.raf.rma.showtime.welcome
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,52 +27,63 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ShowtimeWelcomeScreen(
     onLoginClick: () -> Unit,
+    onRegisterClick: () -> Unit,
     onMoviesClick: () -> Unit,
 ) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
-            .padding(horizontal = 32.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .background(Color.Black),
     ) {
-        Text(
-            text = "Welcome to Showtime app!",
-            color = Color.White,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-        )
-
-        Spacer(modifier = Modifier.height(48.dp))
-
-        Button(
-            onClick = onLoginClick,
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-            shape = RoundedCornerShape(50),
+        Row(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Text(
-                text = "Login",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-            )
+            Button(
+                onClick = onLoginClick,
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                shape = RoundedCornerShape(50),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
+            ) {
+                Text(text = "Login", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+            }
+            Button(
+                onClick = onRegisterClick,
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                shape = RoundedCornerShape(50),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
+            ) {
+                Text(text = "Register", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+            }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = onMoviesClick,
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-            shape = RoundedCornerShape(50),
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 32.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Movies",
+                text = "Welcome to Showtime app!",
+                color = Color.White,
+                fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
+                textAlign = TextAlign.Center,
             )
+
+            Spacer(modifier = Modifier.height(48.dp))
+
+            Button(
+                onClick = onMoviesClick,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                shape = RoundedCornerShape(50),
+            ) {
+                Text(text = "Movies", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            }
         }
     }
 }

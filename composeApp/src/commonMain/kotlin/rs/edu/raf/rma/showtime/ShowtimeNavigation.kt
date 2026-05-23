@@ -28,11 +28,16 @@ fun ShowtimeNavigation(
         composable(route = "welcome") {
             ShowtimeWelcomeScreen(
                 onLoginClick = { navController.navigate("login") },
-                onMoviesClick = { navController.navigate("movies") }
+                onRegisterClick = { navController.navigate("register") },
+                onMoviesClick = { navController.navigate("movies") },
             )
         }
 
         composable(route = "login") {
+
+        }
+
+        composable(route = "register") {
 
         }
 
