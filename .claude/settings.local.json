@@ -25,7 +25,8 @@
       "Bash(Select-Object Name, Mode)",
       "Bash(git *)",
       "Bash(Remove-Item *)",
-      "PowerShell(head *)"
+      "PowerShell(head *)",
+      "Bash(Test-Path *)"
     ]
   }
 }

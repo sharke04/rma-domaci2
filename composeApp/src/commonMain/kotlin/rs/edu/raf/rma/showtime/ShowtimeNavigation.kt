@@ -9,6 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import org.koin.compose.viewmodel.koinViewModel
+import rs.edu.raf.rma.showtime.accounts.LoginScreen
+import rs.edu.raf.rma.showtime.accounts.RegisterScreen
 import rs.edu.raf.rma.showtime.movies.details.MovieDetailsViewModel
 import rs.edu.raf.rma.showtime.movies.details.ui.MovieDetailsScreen
 import rs.edu.raf.rma.showtime.movies.list.MoviesListViewModel
@@ -34,11 +36,11 @@ fun ShowtimeNavigation(
         }
 
         composable(route = "login") {
-
+            LoginScreen(onBack = { navController.navigateUp() })
         }
 
         composable(route = "register") {
-
+            RegisterScreen(onBack = { navController.navigateUp() })
         }
 
         composable(route = "movies") {
