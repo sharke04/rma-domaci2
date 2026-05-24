@@ -49,12 +49,14 @@ import rs.edu.raf.rma.showtime.movies.list.MoviesListViewModel
 fun MoviesListScreen(
     viewModel: MoviesListViewModel,
     onMovieClick: (movieId: String) -> Unit,
+    onBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
 
     MoviesListScreen(
         state = state,
         onMovieClick = onMovieClick,
+        onBack = onBack,
         eventPublisher = viewModel::setEvent,
     )
 }
@@ -63,6 +65,7 @@ fun MoviesListScreen(
 private fun MoviesListScreen(
     state: MoviesListContract.UiState,
     onMovieClick: (movieId: String) -> Unit,
+    onBack: () -> Unit = {},
     eventPublisher: (MoviesListContract.UiEvent) -> Unit = {}
 ) {
     Scaffold(
@@ -71,7 +74,7 @@ private fun MoviesListScreen(
             if (state.isFilterOpen)
                 FilterTopBar(eventPublisher)
             else
-                DefaultTopBar(eventPublisher, state)
+                DefaultTopBar(eventPublisher, state, onBack)
         },
         content = { paddingValues ->
             Box(modifier = Modifier.padding(paddingValues)) {
@@ -189,21 +192,30 @@ fun FilterTopBar(
 fun DefaultTopBar(
     eventPublisher: (MoviesListContract.UiEvent) -> Unit,
     state: MoviesListContract.UiState,
+    onBack: () -> Unit = {},
 ) {
     Column(modifier = Modifier.background(color = Color.Black)) {
         TopAppBar(
             title = {
-                Text(
-                    text = "Premiere",
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleLarge
-                )
-            },
-            navigationIcon = {
-                Box(modifier = Modifier.padding(start = 16.dp, end = 4.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = "🎬",
-                        fontSize = 24.sp 
+                        fontSize = 24.sp,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Premiere",
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                }
+            },
+            navigationIcon = {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back",
+                        tint = Color.White,
                     )
                 }
             },
