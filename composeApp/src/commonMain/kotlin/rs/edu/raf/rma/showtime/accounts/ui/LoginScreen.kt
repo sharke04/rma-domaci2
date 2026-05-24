@@ -1,4 +1,4 @@
-package rs.edu.raf.rma.showtime.accounts
+package rs.edu.raf.rma.showtime.accounts.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

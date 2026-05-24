@@ -1,4 +1,4 @@
-package rs.edu.raf.rma.showtime.accounts
+package rs.edu.raf.rma.showtime.accounts.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun RegisterScreen(onBack: () -> Unit) {
     var username by remember { mutableStateOf("") }
+    var fullName by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var repeatPassword by remember { mutableStateOf("") }
 
@@ -72,6 +73,17 @@ fun RegisterScreen(onBack: () -> Unit) {
             )
 
             Spacer(modifier = Modifier.height(32.dp))
+
+            OutlinedTextField(
+                value = fullName,
+                onValueChange = { fullName = it },
+                label = { Text("Full Name") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                colors = textFieldColors,
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
                 value = username,
