@@ -45,7 +45,7 @@ fun ShowtimeNavigation(
             RegisterScreen(
                 viewModel = viewModel,
                 onBack = { navController.navigateUp() },
-                onRegisterSuccess = { navController.navigate("movies") },
+                onRegisterSuccess = { navController.navigate("welcome") },
             )
         }
 

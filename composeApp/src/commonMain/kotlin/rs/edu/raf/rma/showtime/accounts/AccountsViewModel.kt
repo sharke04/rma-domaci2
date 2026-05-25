@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
+import rs.edu.raf.rma.core.auth.AuthStore
+import rs.edu.raf.rma.core.auth.model.AuthData
 import rs.edu.raf.rma.networking.NetworkingJson
 import rs.edu.raf.rma.networking.ShowtimeApi
 import rs.edu.raf.rma.networking.model.ErrorResponse
@@ -16,6 +18,7 @@ import rs.edu.raf.rma.networking.model.RegisterBody
 
 class AccountsViewModel(
     private val showtimeApi: ShowtimeApi,
+    private val authStore: AuthStore,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AccountsContract.UiState())
@@ -70,7 +73,8 @@ class AccountsViewModel(
             var responseException: ResponseException? = null
 
             try {
-                showtimeApi.signUp(RegisterBody(fullName = fullName, username = username, password = password))
+                val response = showtimeApi.signUp(RegisterBody(fullName = fullName, username = username, password = password))
+                authStore.setAuthData(AuthData(accessToken = response.accessToken))
                 setState { copy(registrationSuccessful = true) }
             } catch (e: ResponseException) {
                 responseException = e
