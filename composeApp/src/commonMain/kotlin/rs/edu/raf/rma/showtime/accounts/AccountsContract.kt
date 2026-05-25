@@ -5,6 +5,7 @@ interface AccountsContract {
         val isLoading: Boolean = false,
         val error: String? = null,
         val registrationSuccessful: Boolean = false,
+        val loginSuccessful: Boolean = false,
     )
 
     sealed class UiEvent {
@@ -13,6 +14,11 @@ interface AccountsContract {
             val username: String,
             val password: String,
             val repeatPassword: String,
+        ) : UiEvent()
+
+        data class Login(
+            val username: String,
+            val password: String,
         ) : UiEvent()
     }
 }

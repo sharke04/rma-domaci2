@@ -13,6 +13,7 @@ import rs.edu.raf.rma.core.auth.AuthStore
 import rs.edu.raf.rma.core.auth.model.AuthData
 import rs.edu.raf.rma.networking.ShowtimeApi
 import rs.edu.raf.rma.networking.model.ErrorResponse
+import rs.edu.raf.rma.networking.model.LoginBody
 import rs.edu.raf.rma.networking.model.RegisterBody
 
 class AccountsViewModel(
@@ -46,6 +47,10 @@ class AccountsViewModel(
                         username = event.username,
                         password = event.password,
                         repeatPassword = event.repeatPassword,
+                    )
+                    is AccountsContract.UiEvent.Login -> login(
+                        username = event.username,
+                        password = event.password,
                     )
                 }
             }
@@ -85,6 +90,38 @@ class AccountsViewModel(
                 val message = runCatching {
                     responseException.response.body<ErrorResponse>().message
                 }.getOrElse { "Registration failed." }
+
+                setState { copy(error = message) }
+            }
+
+            setState { copy(isLoading = false) }
+        }
+    }
+
+    private fun login(username: String, password: String) {
+        if (username.isBlank() || password.isBlank()) {
+            setState { copy(error = "All fields are required.") }
+            return
+        }
+
+        viewModelScope.launch {
+            setState { copy(isLoading = true, error = null) }
+            var responseException: ResponseException? = null
+
+            try {
+                val response = showtimeApi.login(LoginBody(username = username, password = password))
+                authStore.setAuthData(AuthData(accessToken = response.accessToken))
+                setState { copy(loginSuccessful = true) }
+            } catch (e: ResponseException) {
+                responseException = e
+            } catch (_: Exception) {
+                setState { copy(error = "Login failed.") }
+            }
+
+            if (responseException != null) {
+                val message = runCatching {
+                    responseException.response.body<ErrorResponse>().message
+                }.getOrElse { "Login failed." }
 
                 setState { copy(error = message) }
             }

@@ -37,7 +37,16 @@ fun ShowtimeNavigation(
         }
 
         composable(route = "login") {
-            LoginScreen(onBack = { navController.navigateUp() })
+            val viewModel = koinViewModel<AccountsViewModel>()
+            LoginScreen(
+                viewModel = viewModel,
+                onBack = { navController.navigateUp() },
+                onLoginSuccess = {
+                    navController.navigate("movies") {
+                        popUpTo("welcome") { inclusive = false }
+                    }
+                },
+            )
         }
 
         composable(route = "register") {
