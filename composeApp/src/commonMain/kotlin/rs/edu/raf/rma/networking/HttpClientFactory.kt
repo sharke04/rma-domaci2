@@ -44,10 +44,7 @@ object HttpClientFactory {
             HttpResponseValidator {
                 validateResponse { response ->
                     if (!response.status.isSuccess()) {
-                        throw ResponseException(
-                            response = response,
-                            cachedResponseText = "HTTP status is not successful: ${response.status}",
-                        )
+                        throw ResponseException(response, "HTTP error: ${response.status}")
                     }
                 }
             }

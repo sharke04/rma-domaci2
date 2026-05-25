@@ -16,3 +16,10 @@ data class UserApiModel(
     val username: String,
     @SerialName("full_name") val fullName: String,
 )
+
+@Serializable
+data class ErrorResponse(
+    val error: String,
+    val httpCode: Int,
+    val message: String,
+)
