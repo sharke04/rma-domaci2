@@ -11,6 +11,12 @@ data class RegisterBody(
 )
 
 @Serializable
+data class LoginBody(
+    val username: String,
+    val password: String,
+)
+
+@Serializable
 data class NicknameBody(
     val nickname: String,
 )

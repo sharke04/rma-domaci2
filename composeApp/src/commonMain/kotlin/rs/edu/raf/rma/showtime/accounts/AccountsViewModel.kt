@@ -2,8 +2,8 @@ package rs.edu.raf.rma.showtime.accounts
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.ktor.client.call.body
 import io.ktor.client.plugins.ResponseException
-import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import rs.edu.raf.rma.core.auth.AuthStore
 import rs.edu.raf.rma.core.auth.model.AuthData
-import rs.edu.raf.rma.networking.NetworkingJson
 import rs.edu.raf.rma.networking.ShowtimeApi
 import rs.edu.raf.rma.networking.model.ErrorResponse
 import rs.edu.raf.rma.networking.model.RegisterBody
@@ -78,17 +77,14 @@ class AccountsViewModel(
                 setState { copy(registrationSuccessful = true) }
             } catch (e: ResponseException) {
                 responseException = e
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 setState { copy(error = "Registration failed.") }
             }
 
             if (responseException != null) {
-                val errorText = responseException.response.bodyAsText()
-
                 val message = runCatching {
-                    // TODO: Videti da li ima bolji nacin za serijalizaciju
-                    NetworkingJson.decodeFromString<ErrorResponse>(errorText).message
-                }.getOrElse { errorText.ifBlank { "Registration failed." } }
+                    responseException.response.body<ErrorResponse>().message
+                }.getOrElse { "Registration failed." }
 
                 setState { copy(error = message) }
             }
