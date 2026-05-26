@@ -16,6 +16,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,36 +28,79 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ShowtimeWelcomeScreen(
+    viewModel: WelcomeViewModel,
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit,
     onMoviesClick: () -> Unit,
+) {
+    val state by viewModel.state.collectAsState()
+
+    ShowtimeWelcomeScreen(
+        state = state,
+        onLoginClick = onLoginClick,
+        onRegisterClick = onRegisterClick,
+        onMoviesClick = onMoviesClick,
+        eventPublisher = viewModel::setEvent,
+    )
+}
+
+@Composable
+private fun ShowtimeWelcomeScreen(
+    state: WelcomeContract.UiState,
+    onLoginClick: () -> Unit,
+    onRegisterClick: () -> Unit,
+    onMoviesClick: () -> Unit,
+    eventPublisher: (WelcomeContract.UiEvent) -> Unit,
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black),
     ) {
-        Row(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
+        if (state.username != null) {
+            Text(
+                text = "Welcome, ${state.username}",
+                color = Color.White,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(16.dp),
+            )
             Button(
-                onClick = onLoginClick,
+                onClick = { eventPublisher(WelcomeContract.UiEvent.Logout) },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                 shape = RoundedCornerShape(50),
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(16.dp),
             ) {
-                Text(text = "Login", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                Text(text = "Logout", fontWeight = FontWeight.Bold, fontSize = 13.sp)
             }
-            Button(
-                onClick = onRegisterClick,
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-                shape = RoundedCornerShape(50),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
+        } else {
+            Row(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Text(text = "Register", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                Button(
+                    onClick = onLoginClick,
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                    shape = RoundedCornerShape(50),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
+                ) {
+                    Text(text = "Login", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                }
+                Button(
+                    onClick = onRegisterClick,
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                    shape = RoundedCornerShape(50),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
+                ) {
+                    Text(text = "Register", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                }
             }
         }
 

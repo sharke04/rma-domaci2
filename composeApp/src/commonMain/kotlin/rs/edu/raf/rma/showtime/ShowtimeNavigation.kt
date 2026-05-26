@@ -17,6 +17,7 @@ import rs.edu.raf.rma.showtime.movies.details.ui.MovieDetailsScreen
 import rs.edu.raf.rma.showtime.movies.list.MoviesListViewModel
 import rs.edu.raf.rma.showtime.movies.list.ui.MoviesListScreen
 import rs.edu.raf.rma.showtime.welcome.ShowtimeWelcomeScreen
+import rs.edu.raf.rma.showtime.welcome.WelcomeViewModel
 
 @Composable
 fun ShowtimeNavigation(
@@ -29,7 +30,9 @@ fun ShowtimeNavigation(
         startDestination = startDestination,
     ) {
         composable(route = "welcome") {
+            val viewModel = koinViewModel<WelcomeViewModel>()
             ShowtimeWelcomeScreen(
+                viewModel = viewModel,
                 onLoginClick = { navController.navigate("login") },
                 onRegisterClick = { navController.navigate("register") },
                 onMoviesClick = { navController.navigate("movies") },
@@ -41,11 +44,7 @@ fun ShowtimeNavigation(
             LoginScreen(
                 viewModel = viewModel,
                 onBack = { navController.navigateUp() },
-                onLoginSuccess = {
-                    navController.navigate("movies") {
-                        popUpTo("welcome") { inclusive = false }
-                    }
-                },
+                onLoginSuccess = { navController.navigate("welcome") },
             )
         }
 

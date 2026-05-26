@@ -78,7 +78,7 @@ class AccountsViewModel(
 
             try {
                 val response = showtimeApi.signUp(RegisterBody(fullName = fullName, username = username, password = password))
-                authStore.setAuthData(AuthData(accessToken = response.accessToken))
+                authStore.setAuthData(AuthData(accessToken = response.accessToken, username = response.user.username))
                 setState { copy(registrationSuccessful = true) }
             } catch (e: ResponseException) {
                 responseException = e
@@ -110,7 +110,7 @@ class AccountsViewModel(
 
             try {
                 val response = showtimeApi.login(LoginBody(username = username, password = password))
-                authStore.setAuthData(AuthData(accessToken = response.accessToken))
+                authStore.setAuthData(AuthData(accessToken = response.accessToken, username = response.user.username))
                 setState { copy(loginSuccessful = true) }
             } catch (e: ResponseException) {
                 responseException = e
