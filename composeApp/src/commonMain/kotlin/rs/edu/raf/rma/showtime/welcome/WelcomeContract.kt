@@ -4,8 +4,4 @@ interface WelcomeContract {
     data class UiState(
         val username: String? = null,
     )
-
-    sealed interface UiEvent {
-        data object Logout : UiEvent
-    }
 }

@@ -4,17 +4,22 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -28,12 +33,22 @@ import androidx.compose.ui.unit.sp
 fun AccountDetailsScreen(
     viewModel: AccountDetailsViewModel,
     onBack: () -> Unit,
+    onLogout: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.effects.collect { effect ->
+            when (effect) {
+                AccountDetailsContract.UiEffect.LogoutSuccess -> onLogout()
+            }
+        }
+    }
 
     AccountDetailsScreen(
         state = state,
         onBack = onBack,
+        eventPublisher = viewModel::setEvent,
     )
 }
 
@@ -41,6 +56,7 @@ fun AccountDetailsScreen(
 private fun AccountDetailsScreen(
     state: AccountDetailsContract.UiState,
     onBack: () -> Unit,
+    eventPublisher: (AccountDetailsContract.UiEvent) -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -58,6 +74,18 @@ private fun AccountDetailsScreen(
                 contentDescription = "Back",
                 tint = Color.White,
             )
+        }
+
+        Button(
+            onClick = { eventPublisher(AccountDetailsContract.UiEvent.Logout) },
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+            shape = RoundedCornerShape(50),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(16.dp),
+        ) {
+            Text(text = "Logout", fontWeight = FontWeight.Bold, fontSize = 13.sp)
         }
 
         when {

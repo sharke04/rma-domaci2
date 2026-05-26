@@ -2,14 +2,18 @@ package rs.edu.raf.rma.showtime.accounts.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
+import rs.edu.raf.rma.core.auth.AuthStore
 import rs.edu.raf.rma.networking.ShowtimeApi
 
 class AccountDetailsViewModel(
     private val showtimeApi: ShowtimeApi,
+    private val authStore: AuthStore,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AccountDetailsContract.UiState())
@@ -19,8 +23,28 @@ class AccountDetailsViewModel(
         _state.getAndUpdate(reducer)
     }
 
+    private val _effects = MutableSharedFlow<AccountDetailsContract.UiEffect>()
+    val effects = _effects.asSharedFlow()
+
+    private val events = MutableSharedFlow<AccountDetailsContract.UiEvent>()
+
+    fun setEvent(event: AccountDetailsContract.UiEvent) {
+        viewModelScope.launch { events.emit(event) }
+    }
+
     init {
+        observeEvents()
         loadProfile()
+    }
+
+    private fun observeEvents() {
+        viewModelScope.launch {
+            events.collect { event ->
+                when (event) {
+                    AccountDetailsContract.UiEvent.Logout -> logout()
+                }
+            }
+        }
     }
 
     private fun loadProfile() {
@@ -33,6 +57,13 @@ class AccountDetailsViewModel(
                 setState { copy(error = "Failed to load profile.") }
             }
             setState { copy(isLoading = false) }
+        }
+    }
+
+    private fun logout() {
+        viewModelScope.launch {
+            authStore.clearAuthData()
+            _effects.emit(AccountDetailsContract.UiEffect.LogoutSuccess)
         }
     }
 }

@@ -7,4 +7,12 @@ interface AccountDetailsContract {
         val fullName: String? = null,
         val username: String? = null,
     )
+
+    sealed interface UiEvent {
+        data object Logout : UiEvent
+    }
+
+    sealed interface UiEffect {
+        data object LogoutSuccess : UiEffect
+    }
 }

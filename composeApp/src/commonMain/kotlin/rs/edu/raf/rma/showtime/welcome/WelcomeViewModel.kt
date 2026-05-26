@@ -2,7 +2,6 @@ package rs.edu.raf.rma.showtime.welcome
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
@@ -21,25 +20,8 @@ class WelcomeViewModel(
         _state.getAndUpdate(reducer)
     }
 
-    private val events = MutableSharedFlow<WelcomeContract.UiEvent>()
-
-    fun setEvent(event: WelcomeContract.UiEvent) {
-        viewModelScope.launch { events.emit(event) }
-    }
-
     init {
-        observeEvents()
         observeAuthState()
-    }
-
-    private fun observeEvents() {
-        viewModelScope.launch {
-            events.collect { event ->
-                when (event) {
-                    WelcomeContract.UiEvent.Logout -> logout()
-                }
-            }
-        }
     }
 
     private fun observeAuthState() {
@@ -50,12 +32,6 @@ class WelcomeViewModel(
                     AuthState.Unauthenticated -> setState { copy(username = null) }
                 }
             }
-        }
-    }
-
-    private fun logout() {
-        viewModelScope.launch {
-            authStore.clearAuthData()
         }
     }
 }

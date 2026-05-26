@@ -42,7 +42,6 @@ fun ShowtimeWelcomeScreen(
         onRegisterClick = onRegisterClick,
         onMoviesClick = onMoviesClick,
         onAccountClick = onAccountClick,
-        eventPublisher = viewModel::setEvent,
     )
 }
 
@@ -53,7 +52,6 @@ private fun ShowtimeWelcomeScreen(
     onRegisterClick: () -> Unit,
     onMoviesClick: () -> Unit,
     onAccountClick: () -> Unit,
-    eventPublisher: (WelcomeContract.UiEvent) -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -70,28 +68,16 @@ private fun ShowtimeWelcomeScreen(
                     .align(Alignment.TopStart)
                     .padding(16.dp),
             )
-            Row(
+            Button(
+                onClick = onAccountClick,
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                shape = RoundedCornerShape(50),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Button(
-                    onClick = onAccountClick,
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-                    shape = RoundedCornerShape(50),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
-                ) {
-                    Text(text = "Account", fontWeight = FontWeight.Bold, fontSize = 13.sp)
-                }
-                Button(
-                    onClick = { eventPublisher(WelcomeContract.UiEvent.Logout) },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-                    shape = RoundedCornerShape(50),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
-                ) {
-                    Text(text = "Logout", fontWeight = FontWeight.Bold, fontSize = 13.sp)
-                }
+                Text(text = "Account", fontWeight = FontWeight.Bold, fontSize = 13.sp)
             }
         } else {
             Row(

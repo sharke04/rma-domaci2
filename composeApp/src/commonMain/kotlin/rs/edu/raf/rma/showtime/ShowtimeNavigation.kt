@@ -47,6 +47,7 @@ fun ShowtimeNavigation(
             AccountDetailsScreen(
                 viewModel = viewModel,
                 onBack = { navController.navigateUp() },
+                onLogout = { navController.navigateToWelcome() },
             )
         }
 
@@ -93,6 +94,10 @@ fun ShowtimeNavigation(
             )
         }
     }
+}
+
+private fun NavController.navigateToWelcome() {
+    navigate("welcome") { popUpTo("welcome") { inclusive = false } }
 }
 
 private fun NavController.navigateToMovieDetails(movieId: String) {
