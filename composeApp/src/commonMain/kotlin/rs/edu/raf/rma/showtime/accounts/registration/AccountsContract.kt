@@ -1,4 +1,4 @@
-package rs.edu.raf.rma.showtime.accounts
+package rs.edu.raf.rma.showtime.accounts.registration
 
 interface AccountsContract {
     data class UiState(

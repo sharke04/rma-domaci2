@@ -1,4 +1,4 @@
-package rs.edu.raf.rma.showtime.accounts
+package rs.edu.raf.rma.showtime.accounts.registration
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,13 +11,13 @@ import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import rs.edu.raf.rma.core.auth.AuthStore
 import rs.edu.raf.rma.core.auth.model.AuthData
-import rs.edu.raf.rma.networking.ShowtimeApi
+import rs.edu.raf.rma.networking.AccountsApi
 import rs.edu.raf.rma.networking.model.ErrorResponse
 import rs.edu.raf.rma.networking.model.LoginBody
 import rs.edu.raf.rma.networking.model.RegisterBody
 
 class AccountsViewModel(
-    private val showtimeApi: ShowtimeApi,
+    private val accountsApi: AccountsApi,
     private val authStore: AuthStore,
 ) : ViewModel() {
 
@@ -77,8 +77,19 @@ class AccountsViewModel(
             var responseException: ResponseException? = null
 
             try {
-                val response = showtimeApi.signUp(RegisterBody(fullName = fullName, username = username, password = password))
-                authStore.setAuthData(AuthData(accessToken = response.accessToken, username = response.user.username))
+                val response = accountsApi.signUp(
+                    RegisterBody(
+                        fullName = fullName,
+                        username = username,
+                        password = password
+                    )
+                )
+                authStore.setAuthData(
+                    AuthData(
+                        accessToken = response.accessToken,
+                        username = response.user.username
+                    )
+                )
                 setState { copy(registrationSuccessful = true) }
             } catch (e: ResponseException) {
                 responseException = e
@@ -109,8 +120,18 @@ class AccountsViewModel(
             var responseException: ResponseException? = null
 
             try {
-                val response = showtimeApi.login(LoginBody(username = username, password = password))
-                authStore.setAuthData(AuthData(accessToken = response.accessToken, username = response.user.username))
+                val response = accountsApi.login(
+                    LoginBody(
+                        username = username,
+                        password = password
+                    )
+                )
+                authStore.setAuthData(
+                    AuthData(
+                        accessToken = response.accessToken,
+                        username = response.user.username
+                    )
+                )
                 setState { copy(loginSuccessful = true) }
             } catch (e: ResponseException) {
                 responseException = e

@@ -6,7 +6,7 @@ import rs.edu.raf.rma.networking.model.AccountApiModel
 import rs.edu.raf.rma.networking.model.LoginBody
 import rs.edu.raf.rma.networking.model.RegisterBody
 
-interface ShowtimeApi {
+interface AccountsApi {
     @POST("auth/signup")
     suspend fun signUp(@Body body: RegisterBody): AccountApiModel
 

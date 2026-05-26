@@ -1,4 +1,4 @@
-package rs.edu.raf.rma.showtime.accounts.ui
+package rs.edu.raf.rma.showtime.accounts.registration.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -37,8 +37,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import rs.edu.raf.rma.showtime.accounts.AccountsContract
-import rs.edu.raf.rma.showtime.accounts.AccountsViewModel
+import rs.edu.raf.rma.showtime.accounts.registration.AccountsContract
+import rs.edu.raf.rma.showtime.accounts.registration.AccountsViewModel
 
 @Composable
 fun LoginScreen(

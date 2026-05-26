@@ -16,10 +16,10 @@ import rs.edu.raf.rma.core.auth.model.AuthState
 import rs.edu.raf.rma.networking.BeskarApi
 import rs.edu.raf.rma.networking.HttpClientFactory
 import rs.edu.raf.rma.networking.MoviesApi
-import rs.edu.raf.rma.networking.ShowtimeApi
+import rs.edu.raf.rma.networking.AccountsApi
 import rs.edu.raf.rma.networking.createBeskarApi
 import rs.edu.raf.rma.networking.createMoviesApi
-import rs.edu.raf.rma.networking.createShowtimeApi
+import rs.edu.raf.rma.networking.createAccountsApi
 
 val networkingModule = module {
 
@@ -84,12 +84,12 @@ val networkingModule = module {
             .createMoviesApi()
     }
 
-    single<ShowtimeApi> {
+    single<AccountsApi> {
         Ktorfit.Builder()
             .httpClient(get<HttpClient>(Qualifiers.Unauthenticated))
             .baseUrl("https://rma.finlab.rs/")
             .build()
-            .createShowtimeApi()
+            .createAccountsApi()
     }
 }
 
