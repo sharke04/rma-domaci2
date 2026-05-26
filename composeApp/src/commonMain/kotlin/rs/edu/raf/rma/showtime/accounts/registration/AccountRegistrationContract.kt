@@ -1,6 +1,6 @@
 package rs.edu.raf.rma.showtime.accounts.registration
 
-interface AccountsContract {
+interface AccountRegistrationContract {
     data class UiState(
         val isLoading: Boolean = false,
         val error: String? = null,

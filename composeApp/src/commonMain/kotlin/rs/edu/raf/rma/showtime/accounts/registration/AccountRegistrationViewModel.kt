@@ -16,21 +16,21 @@ import rs.edu.raf.rma.networking.model.ErrorResponse
 import rs.edu.raf.rma.networking.model.LoginBody
 import rs.edu.raf.rma.networking.model.RegisterBody
 
-class AccountsViewModel(
+class AccountRegistrationViewModel(
     private val accountsApi: AccountsApi,
     private val authStore: AuthStore,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(AccountsContract.UiState())
+    private val _state = MutableStateFlow(AccountRegistrationContract.UiState())
     val state = _state.asStateFlow()
 
-    private fun setState(reducer: AccountsContract.UiState.() -> AccountsContract.UiState) {
+    private fun setState(reducer: AccountRegistrationContract.UiState.() -> AccountRegistrationContract.UiState) {
         _state.getAndUpdate(reducer)
     }
 
-    private val events = MutableSharedFlow<AccountsContract.UiEvent>()
+    private val events = MutableSharedFlow<AccountRegistrationContract.UiEvent>()
 
-    fun setEvent(event: AccountsContract.UiEvent) {
+    fun setEvent(event: AccountRegistrationContract.UiEvent) {
         viewModelScope.launch { events.emit(event) }
     }
 
@@ -42,13 +42,13 @@ class AccountsViewModel(
         viewModelScope.launch {
             events.collect { event ->
                 when (event) {
-                    is AccountsContract.UiEvent.Register -> register(
+                    is AccountRegistrationContract.UiEvent.Register -> register(
                         fullName = event.fullName,
                         username = event.username,
                         password = event.password,
                         repeatPassword = event.repeatPassword,
                     )
-                    is AccountsContract.UiEvent.Login -> login(
+                    is AccountRegistrationContract.UiEvent.Login -> login(
                         username = event.username,
                         password = event.password,
                     )

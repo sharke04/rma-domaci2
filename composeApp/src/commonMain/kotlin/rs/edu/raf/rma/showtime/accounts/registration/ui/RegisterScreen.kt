@@ -37,12 +37,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import rs.edu.raf.rma.showtime.accounts.registration.AccountsContract
-import rs.edu.raf.rma.showtime.accounts.registration.AccountsViewModel
+import rs.edu.raf.rma.showtime.accounts.registration.AccountRegistrationContract
+import rs.edu.raf.rma.showtime.accounts.registration.AccountRegistrationViewModel
 
 @Composable
 fun RegisterScreen(
-    viewModel: AccountsViewModel,
+    viewModel: AccountRegistrationViewModel,
     onBack: () -> Unit,
     onRegisterSuccess: () -> Unit,
 ) {
@@ -62,9 +62,9 @@ fun RegisterScreen(
 
 @Composable
 private fun RegisterScreen(
-    state: AccountsContract.UiState,
+    state: AccountRegistrationContract.UiState,
     onBack: () -> Unit,
-    eventPublisher: (AccountsContract.UiEvent) -> Unit,
+    eventPublisher: (AccountRegistrationContract.UiEvent) -> Unit,
 ) {
     var fullName by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
@@ -165,7 +165,7 @@ private fun RegisterScreen(
             Button(
                 onClick = {
                     eventPublisher(
-                        AccountsContract.UiEvent.Register(
+                        AccountRegistrationContract.UiEvent.Register(
                             fullName = fullName,
                             username = username,
                             password = password,

@@ -32,6 +32,7 @@ fun ShowtimeWelcomeScreen(
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit,
     onMoviesClick: () -> Unit,
+    onAccountClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -40,6 +41,7 @@ fun ShowtimeWelcomeScreen(
         onLoginClick = onLoginClick,
         onRegisterClick = onRegisterClick,
         onMoviesClick = onMoviesClick,
+        onAccountClick = onAccountClick,
         eventPublisher = viewModel::setEvent,
     )
 }
@@ -50,6 +52,7 @@ private fun ShowtimeWelcomeScreen(
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit,
     onMoviesClick: () -> Unit,
+    onAccountClick: () -> Unit,
     eventPublisher: (WelcomeContract.UiEvent) -> Unit,
 ) {
     Box(
@@ -67,16 +70,28 @@ private fun ShowtimeWelcomeScreen(
                     .align(Alignment.TopStart)
                     .padding(16.dp),
             )
-            Button(
-                onClick = { eventPublisher(WelcomeContract.UiEvent.Logout) },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-                shape = RoundedCornerShape(50),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
+            Row(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Text(text = "Logout", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                Button(
+                    onClick = onAccountClick,
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                    shape = RoundedCornerShape(50),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
+                ) {
+                    Text(text = "Account", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                }
+                Button(
+                    onClick = { eventPublisher(WelcomeContract.UiEvent.Logout) },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                    shape = RoundedCornerShape(50),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
+                ) {
+                    Text(text = "Logout", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                }
             }
         } else {
             Row(

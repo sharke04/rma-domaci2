@@ -9,13 +9,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import org.koin.compose.viewmodel.koinViewModel
-import rs.edu.raf.rma.showtime.accounts.registration.AccountsViewModel
+import rs.edu.raf.rma.showtime.accounts.registration.AccountRegistrationViewModel
 import rs.edu.raf.rma.showtime.accounts.registration.ui.LoginScreen
 import rs.edu.raf.rma.showtime.accounts.registration.ui.RegisterScreen
 import rs.edu.raf.rma.showtime.movies.details.MovieDetailsViewModel
 import rs.edu.raf.rma.showtime.movies.details.ui.MovieDetailsScreen
 import rs.edu.raf.rma.showtime.movies.list.MoviesListViewModel
 import rs.edu.raf.rma.showtime.movies.list.ui.MoviesListScreen
+import rs.edu.raf.rma.showtime.accounts.details.AccountDetailsScreen
+import rs.edu.raf.rma.showtime.accounts.details.AccountDetailsViewModel
 import rs.edu.raf.rma.showtime.welcome.ShowtimeWelcomeScreen
 import rs.edu.raf.rma.showtime.welcome.WelcomeViewModel
 
@@ -36,11 +38,20 @@ fun ShowtimeNavigation(
                 onLoginClick = { navController.navigate("login") },
                 onRegisterClick = { navController.navigate("register") },
                 onMoviesClick = { navController.navigate("movies") },
+                onAccountClick = { navController.navigate("account_details") },
+            )
+        }
+
+        composable(route = "account_details") {
+            val viewModel = koinViewModel<AccountDetailsViewModel>()
+            AccountDetailsScreen(
+                viewModel = viewModel,
+                onBack = { navController.navigateUp() },
             )
         }
 
         composable(route = "login") {
-            val viewModel = koinViewModel<AccountsViewModel>()
+            val viewModel = koinViewModel<AccountRegistrationViewModel>()
             LoginScreen(
                 viewModel = viewModel,
                 onBack = { navController.navigateUp() },
@@ -49,7 +60,7 @@ fun ShowtimeNavigation(
         }
 
         composable(route = "register") {
-            val viewModel = koinViewModel<AccountsViewModel>()
+            val viewModel = koinViewModel<AccountRegistrationViewModel>()
             RegisterScreen(
                 viewModel = viewModel,
                 onBack = { navController.navigateUp() },
