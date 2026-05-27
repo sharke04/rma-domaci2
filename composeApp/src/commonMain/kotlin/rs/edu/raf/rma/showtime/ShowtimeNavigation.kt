@@ -86,6 +86,7 @@ fun ShowtimeNavigation(
             FavouritesScreen(
                 viewModel = viewModel,
                 onMovieClick = { navController.navigateToMovieDetails(movieId = it) },
+                onBack = { navController.navigateUp() },
             )
         }
 

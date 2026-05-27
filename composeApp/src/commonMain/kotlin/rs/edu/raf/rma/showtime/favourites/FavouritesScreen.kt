@@ -10,8 +10,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -31,9 +35,10 @@ import rs.edu.raf.rma.showtime.movies.list.ui.MovieListItem
 fun FavouritesScreen(
     viewModel: FavouritesViewModel,
     onMovieClick: (movieId: String) -> Unit,
+    onBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
-    FavouritesScreen(state = state, onMovieClick = onMovieClick)
+    FavouritesScreen(state = state, onMovieClick = onMovieClick, onBack = onBack)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,6 +46,7 @@ fun FavouritesScreen(
 private fun FavouritesScreen(
     state: FavouritesContract.UiState,
     onMovieClick: (movieId: String) -> Unit,
+    onBack: () -> Unit,
 ) {
     Scaffold(
         containerColor = Color.Black,
@@ -52,6 +58,15 @@ private fun FavouritesScreen(
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.titleLarge,
                     )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White,
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFF0F101C),
