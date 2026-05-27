@@ -8,9 +8,11 @@ import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import rs.edu.raf.rma.core.auth.AuthStore
 import rs.edu.raf.rma.core.auth.model.AuthState
+import rs.edu.raf.rma.showtime.domain.ShowtimeRepository
 
 class WelcomeViewModel(
     private val authStore: AuthStore,
+    private val showtimeRepository: ShowtimeRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(WelcomeContract.UiState())
@@ -22,6 +24,13 @@ class WelcomeViewModel(
 
     init {
         observeAuthState()
+        refreshMovies()
+    }
+
+    private fun refreshMovies() {
+        viewModelScope.launch {
+            runCatching { showtimeRepository.refreshMovies() }
+        }
     }
 
     private fun observeAuthState() {

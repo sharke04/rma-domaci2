@@ -36,8 +36,6 @@ class SplashViewModel(
 
             _isLoggedIn.value = authState is AuthState.Authenticated
 
-            // TODO neke druge boot operacije
-
             delay(2.seconds)
             _bootState.value = BootState.Success
         } catch (e: Exception) {

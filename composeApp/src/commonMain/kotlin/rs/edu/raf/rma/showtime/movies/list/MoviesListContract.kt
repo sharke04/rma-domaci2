@@ -7,7 +7,7 @@ interface MoviesListContract {
     data class UiState(
         val movies: List<Movie> = emptyList(),
         val genres: List<Genre> = emptyList(),
-        val isLoading: Boolean = true,
+        val isLoading: Boolean = false,
         val error: Throwable? = null,
         val sortBy: String = "Rating",
         val isAscending: Boolean = false,

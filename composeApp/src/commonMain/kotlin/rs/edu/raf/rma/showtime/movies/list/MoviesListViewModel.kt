@@ -32,7 +32,6 @@ class MoviesListViewModel(
         observeEvents()
         observeGenres()
         observeMovies()
-        fetchData()
     }
 
     private fun observeEvents() {
@@ -139,20 +138,8 @@ class MoviesListViewModel(
                     )
                 }
                 .collect { movies ->
-                    setState { copy(movies = movies) }
+                    setState { copy(movies = movies, isLoading = movies.isEmpty()) }
                 }
-        }
-    }
-
-    // TODO: mozda ne bi trebalo da stoji ovde, vec da se podaci ucitavaju na samom pokretanju aplikacije, tako da bude nezavisno od ovog ekrana
-    private fun fetchData() {
-        viewModelScope.launch {
-            setState { copy(isLoading = true, error = null) }
-
-            runCatching { showtimeRepository.refreshMovies() }
-                .onFailure { setState { copy(error = it) } }
-
-            setState { copy(isLoading = false) }
         }
     }
 
