@@ -1,5 +1,6 @@
 package rs.edu.raf.rma.networking
 
+import de.jensklingenberg.ktorfit.http.DELETE
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.POST
 import de.jensklingenberg.ktorfit.http.Path
@@ -15,4 +16,7 @@ interface ShowtimeApi {
 
     @POST("me/favorites/{movie_id}")
     suspend fun addFavorite(@Path("movie_id") movieId: String)
+
+    @DELETE("me/favorites/{movie_id}")
+    suspend fun removeFavorite(@Path("movie_id") movieId: String)
 }
