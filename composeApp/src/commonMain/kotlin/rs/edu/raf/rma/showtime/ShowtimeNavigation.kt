@@ -21,6 +21,7 @@ import rs.edu.raf.rma.showtime.accounts.details.AccountDetailsViewModel
 import rs.edu.raf.rma.showtime.favourites.FavouritesScreen
 import rs.edu.raf.rma.showtime.favourites.FavouritesViewModel
 import rs.edu.raf.rma.showtime.quiz.QuizScreen
+import rs.edu.raf.rma.showtime.quiz.QuizViewModel
 import rs.edu.raf.rma.showtime.welcome.ShowtimeWelcomeScreen
 import rs.edu.raf.rma.showtime.welcome.WelcomeViewModel
 
@@ -48,7 +49,11 @@ fun ShowtimeNavigation(
         }
 
         composable(route = "quiz") {
-            QuizScreen()
+            val viewModel = koinViewModel<QuizViewModel>()
+            QuizScreen(
+                viewModel = viewModel,
+                onClose = { navController.navigateUp() },
+            )
         }
 
         composable(route = "account_details") {

@@ -98,6 +98,24 @@ interface ShowtimeDao {
     """)
     fun observeFavouriteMovies(userId: Int): Flow<List<MovieWithGenres>>
 
+    @Query("SELECT COUNT(*) FROM movies")
+    suspend fun getMovieCount(): Int
+
+    @Query("SELECT * FROM movies ORDER BY RANDOM() LIMIT :limit")
+    suspend fun getRandomMovies(limit: Int): List<MovieEntity>
+
+    @Query("SELECT COUNT(DISTINCT movieId) FROM images")
+    suspend fun getMovieCountWithImages(): Int
+
+    @Query("SELECT * FROM movies WHERE id IN (SELECT DISTINCT movieId FROM images) ORDER BY RANDOM() LIMIT :limit")
+    suspend fun getRandomMoviesWithImages(limit: Int): List<MovieEntity>
+
+    @Query("SELECT * FROM actors WHERE movieId = :movieId")
+    suspend fun getActorsForMovie(movieId: String): List<ActorEntity>
+
+    @Query("SELECT * FROM actors WHERE movieId NOT IN (:excludeMovieIds) ORDER BY RANDOM() LIMIT :limit")
+    suspend fun getRandomActorsExcluding(excludeMovieIds: List<String>, limit: Int): List<ActorEntity>
+
     @Transaction
     suspend fun refreshListTransaction(
         movies: List<MovieEntity>,
