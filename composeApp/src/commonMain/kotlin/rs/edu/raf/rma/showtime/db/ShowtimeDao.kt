@@ -72,6 +72,23 @@ interface ShowtimeDao {
         sortOrder: String
     ): Flow<List<MovieWithGenres>>
 
+    @Upsert
+    suspend fun upsertUser(user: UserEntity)
+
+    @Upsert
+    suspend fun upsertUserFavourites(crossRefs: List<UserFavouriteCrossRef>)
+
+    @Query("DELETE FROM user_favourite_cross_ref WHERE userId = :userId")
+    suspend fun deleteFavouritesForUser(userId: Int)
+
+    @Transaction
+    @Query("""
+        SELECT movies.* FROM movies
+        INNER JOIN user_favourite_cross_ref ON movies.id = user_favourite_cross_ref.movieImdbId
+        WHERE user_favourite_cross_ref.userId = :userId
+    """)
+    fun observeFavouriteMovies(userId: Int): Flow<List<MovieWithGenres>>
+
     @Transaction
     suspend fun refreshListTransaction(
         movies: List<MovieEntity>,

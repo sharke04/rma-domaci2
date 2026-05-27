@@ -18,6 +18,8 @@ import rs.edu.raf.rma.showtime.movies.list.MoviesListViewModel
 import rs.edu.raf.rma.showtime.movies.list.ui.MoviesListScreen
 import rs.edu.raf.rma.showtime.accounts.details.AccountDetailsScreen
 import rs.edu.raf.rma.showtime.accounts.details.AccountDetailsViewModel
+import rs.edu.raf.rma.showtime.favourites.FavouritesScreen
+import rs.edu.raf.rma.showtime.favourites.FavouritesViewModel
 import rs.edu.raf.rma.showtime.welcome.ShowtimeWelcomeScreen
 import rs.edu.raf.rma.showtime.welcome.WelcomeViewModel
 
@@ -39,6 +41,7 @@ fun ShowtimeNavigation(
                 onRegisterClick = { navController.navigate("register") },
                 onMoviesClick = { navController.navigate("movies") },
                 onAccountClick = { navController.navigate("account_details") },
+                onFavouritesClick = { navController.navigate("favourites") },
             )
         }
 
@@ -75,6 +78,14 @@ fun ShowtimeNavigation(
                 viewModel = viewModel,
                 onMovieClick = { navController.navigateToMovieDetails(movieId = it) },
                 onBack = { navController.navigateUp() },
+            )
+        }
+
+        composable(route = "favourites") {
+            val viewModel = koinViewModel<FavouritesViewModel>()
+            FavouritesScreen(
+                viewModel = viewModel,
+                onMovieClick = { navController.navigateToMovieDetails(movieId = it) },
             )
         }
 

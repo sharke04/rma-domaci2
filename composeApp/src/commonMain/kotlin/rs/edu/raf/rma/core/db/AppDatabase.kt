@@ -19,6 +19,8 @@ import rs.edu.raf.rma.showtime.db.ImageEntity
 import rs.edu.raf.rma.showtime.db.MovieEntity
 import rs.edu.raf.rma.showtime.db.MovieGenreCrossRef
 import rs.edu.raf.rma.showtime.db.ShowtimeDao
+import rs.edu.raf.rma.showtime.db.UserEntity
+import rs.edu.raf.rma.showtime.db.UserFavouriteCrossRef
 import rs.edu.raf.rma.showtime.db.VideoEntity
 
 @Database(
@@ -33,8 +35,10 @@ import rs.edu.raf.rma.showtime.db.VideoEntity
         ImageEntity::class,
         VideoEntity::class,
         ActorEntity::class,
+        UserEntity::class,
+        UserFavouriteCrossRef::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = true,
 )
 @TypeConverters(DateConverters::class)

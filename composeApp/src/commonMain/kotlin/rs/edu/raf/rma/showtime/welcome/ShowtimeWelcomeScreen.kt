@@ -33,6 +33,7 @@ fun ShowtimeWelcomeScreen(
     onRegisterClick: () -> Unit,
     onMoviesClick: () -> Unit,
     onAccountClick: () -> Unit,
+    onFavouritesClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -42,6 +43,7 @@ fun ShowtimeWelcomeScreen(
         onRegisterClick = onRegisterClick,
         onMoviesClick = onMoviesClick,
         onAccountClick = onAccountClick,
+        onFavouritesClick = onFavouritesClick,
     )
 }
 
@@ -52,6 +54,7 @@ private fun ShowtimeWelcomeScreen(
     onRegisterClick: () -> Unit,
     onMoviesClick: () -> Unit,
     onAccountClick: () -> Unit,
+    onFavouritesClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -129,6 +132,19 @@ private fun ShowtimeWelcomeScreen(
                 shape = RoundedCornerShape(50),
             ) {
                 Text(text = "Movies", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            }
+
+            if (state.username != null) {
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = onFavouritesClick,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                    shape = RoundedCornerShape(50),
+                ) {
+                    Text(text = "Favourites", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                }
             }
         }
     }

@@ -5,12 +5,15 @@ import rs.edu.raf.rma.networking.model.ImageApiModel
 import rs.edu.raf.rma.networking.model.MovieDetailsApiModel
 import rs.edu.raf.rma.networking.model.MovieListItemApiModel
 import rs.edu.raf.rma.networking.model.PersonSummaryApiModel
+import rs.edu.raf.rma.networking.model.UserApiModel
 import rs.edu.raf.rma.networking.model.VideoApiModel
 import rs.edu.raf.rma.showtime.db.ActorEntity
 import rs.edu.raf.rma.showtime.db.GenreEntity
 import rs.edu.raf.rma.showtime.db.ImageEntity
 import rs.edu.raf.rma.showtime.db.MovieEntity
+import rs.edu.raf.rma.showtime.db.MovieGenreCrossRef
 import rs.edu.raf.rma.showtime.db.MovieWithGenres
+import rs.edu.raf.rma.showtime.db.UserEntity
 import rs.edu.raf.rma.showtime.db.VideoEntity
 import rs.edu.raf.rma.showtime.domain.Actor
 import rs.edu.raf.rma.showtime.domain.Genre
@@ -120,6 +123,11 @@ fun ActorEntity.toDomain() = Actor(
 )
 
 fun GenreEntity.toDomain() = Genre(id = id, name = name)
+
+fun UserApiModel.toEntity() = UserEntity(id = id, username = username, fullName = fullName)
+
+fun MovieListItemApiModel.toMovieGenreCrossRefs(): List<MovieGenreCrossRef> =
+    genres.map { MovieGenreCrossRef(movieId = imdbId, genreId = it.id) }
 
 fun MovieWithGenres.toDomain() = Movie(
     id = movie.id,

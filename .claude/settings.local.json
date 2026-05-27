@@ -29,7 +29,9 @@
       "Bash(Test-Path *)",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\PC\\\\Documents\\\\raf\\\\rma\\\\drugi projekat\\\\showtime\" -Recurse -Directory)",
       "Bash(Select-Object -First 20)",
-      "Bash(Format-Table FullName)"
+      "Bash(Format-Table FullName)",
+      "Bash(Get-ChildItem *)",
+      "Bash(Find \"C:\\\\Users\\\\PC\\\\Documents\\\\raf\\\\rma\\\\drugi projekat\\\\showtime\" -name \"AuthStore*\" -o -name \"AuthData*\")"
     ]
   }
 }
