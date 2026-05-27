@@ -20,6 +20,7 @@ import rs.edu.raf.rma.showtime.accounts.details.AccountDetailsScreen
 import rs.edu.raf.rma.showtime.accounts.details.AccountDetailsViewModel
 import rs.edu.raf.rma.showtime.favourites.FavouritesScreen
 import rs.edu.raf.rma.showtime.favourites.FavouritesViewModel
+import rs.edu.raf.rma.showtime.quiz.QuizScreen
 import rs.edu.raf.rma.showtime.welcome.ShowtimeWelcomeScreen
 import rs.edu.raf.rma.showtime.welcome.WelcomeViewModel
 
@@ -42,7 +43,12 @@ fun ShowtimeNavigation(
                 onMoviesClick = { navController.navigate("movies") },
                 onAccountClick = { navController.navigate("account_details") },
                 onFavouritesClick = { navController.navigate("favourites") },
+                onQuizClick = { navController.navigate("quiz") },
             )
+        }
+
+        composable(route = "quiz") {
+            QuizScreen()
         }
 
         composable(route = "account_details") {
