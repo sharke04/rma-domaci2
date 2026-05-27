@@ -7,17 +7,24 @@ import io.ktor.client.call.body
 import io.ktor.client.plugins.ResponseException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
+import rs.edu.raf.rma.core.auth.AuthStore
+import rs.edu.raf.rma.core.auth.model.AuthState
 import rs.edu.raf.rma.networking.model.ApiErrorResponse
 import rs.edu.raf.rma.showtime.domain.ShowtimeRepository
+import rs.edu.raf.rma.showtime.favourites.FavouritesRepository
 import rs.edu.raf.rma.showtime.movieIdOrThrow
 
 class MovieDetailsViewModel(
+    //TODO: Videti cemu sluzi SavedStateHandle
     private val savedStateHandle: SavedStateHandle,
     private val showtimeRepository: ShowtimeRepository,
+    private val favouritesRepository: FavouritesRepository,
+    private val authStore: AuthStore,
 ) : ViewModel() {
     private val _state = MutableStateFlow(MovieDetailsContract.UiState())
     val state = _state.asStateFlow()
@@ -28,12 +35,62 @@ class MovieDetailsViewModel(
 
     private val movieId: String = savedStateHandle.movieIdOrThrow
 
+    private val events = MutableSharedFlow<MovieDetailsContract.UiEvent>()
+
+    fun setEvent(event: MovieDetailsContract.UiEvent) {
+        viewModelScope.launch { events.emit(event) }
+    }
+
     init {
+        observeEvents()
         observeMovie()
         observeMovieImages()
         observeMovieVideo()
         observeMovieActors()
         loadMovieDetails()
+        observeAuthState()
+    }
+
+    private fun observeEvents() {
+        viewModelScope.launch {
+            events.collect { event ->
+                when (event) {
+                    MovieDetailsContract.UiEvent.ToggleFavourite -> toggleFavourite()
+                    MovieDetailsContract.UiEvent.Retry -> loadMovieDetails()
+                }
+            }
+        }
+    }
+
+    private fun observeAuthState() {
+        viewModelScope.launch {
+            authStore.authState.collect { authState ->
+                when (authState) {
+                    is AuthState.Authenticated -> loadIsFavourite()
+                    AuthState.Unauthenticated -> setState { copy(isFavourite = null) }
+                }
+            }
+        }
+    }
+
+    private fun loadIsFavourite() {
+        viewModelScope.launch {
+            val favourite = favouritesRepository.isFavourite(movieId)
+            setState { copy(isFavourite = favourite) }
+        }
+    }
+
+    private fun toggleFavourite() {
+        val current = state.value.isFavourite ?: return
+        setState { copy(isFavourite = !current) }
+        viewModelScope.launch {
+            try {
+                if (!current) favouritesRepository.addFavourite(movieId)
+                else favouritesRepository.removeFavourite(movieId)
+            } catch (_: Exception) {
+                setState { copy(isFavourite = current) }
+            }
+        }
     }
 
     private fun observeMovie() {
@@ -68,7 +125,7 @@ class MovieDetailsViewModel(
         }
     }
 
-    fun loadMovieDetails() {
+    private fun loadMovieDetails() {
         viewModelScope.launch {
             setState { copy(isLoading = true, error = null) }
             try {

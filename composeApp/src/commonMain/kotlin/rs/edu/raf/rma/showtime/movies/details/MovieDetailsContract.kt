@@ -12,6 +12,12 @@ interface MovieDetailsContract {
         val images: List<Image> = emptyList(),
         val actors: List<Actor> = emptyList(),
         val video: Video? = null,
-        val error: Throwable? = null
+        val error: Throwable? = null,
+        val isFavourite: Boolean? = null,
     )
+
+    sealed interface UiEvent {
+        data object ToggleFavourite : UiEvent
+        data object Retry : UiEvent
+    }
 }

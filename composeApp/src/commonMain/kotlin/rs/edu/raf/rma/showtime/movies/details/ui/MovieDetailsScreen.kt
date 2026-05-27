@@ -31,25 +31,37 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import rs.edu.raf.rma.showtime.movies.details.MovieDetailsContract
 import rs.edu.raf.rma.showtime.movies.details.MovieDetailsViewModel
 
 @Composable
 fun MovieDetailsScreen(
     viewModel: MovieDetailsViewModel,
-    onClose: () -> Unit
+    onClose: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
+    MovieDetailsScreen(
+        state = state,
+        eventPublisher = { viewModel.setEvent(it) },
+        onClose = onClose,
+    )
+}
 
+@Composable
+private fun MovieDetailsScreen(
+    state: MovieDetailsContract.UiState,
+    eventPublisher: (MovieDetailsContract.UiEvent) -> Unit,
+    onClose: () -> Unit,
+) {
     Scaffold(containerColor = Color.Black) { padding ->
         Box(modifier = Modifier.fillMaxSize().padding(padding)) {
             if (state.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = Color.Red)
             } else if (state.error != null) {
-                Text(text = "Error")
                 ErrorView(
-                    onRetry = { viewModel.loadMovieDetails() },
+                    onRetry = { eventPublisher(MovieDetailsContract.UiEvent.Retry) },
                     onBack = onClose,
-                    message = state.error!!.message
+                    message = state.error.message,
                 )
             } else {
                 state.movie?.let { movie ->
@@ -58,7 +70,9 @@ fun MovieDetailsScreen(
                         images = state.images,
                         actors = state.actors,
                         video = state.video,
-                        onBack = onClose
+                        isFavourite = state.isFavourite,
+                        onBack = onClose,
+                        onToggleFavourite = { eventPublisher(MovieDetailsContract.UiEvent.ToggleFavourite) },
                     )
                 }
             }

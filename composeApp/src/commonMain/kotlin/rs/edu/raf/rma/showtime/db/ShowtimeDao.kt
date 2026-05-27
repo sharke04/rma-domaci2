@@ -78,8 +78,17 @@ interface ShowtimeDao {
     @Upsert
     suspend fun upsertUserFavourites(crossRefs: List<UserFavouriteCrossRef>)
 
+    @Upsert
+    suspend fun insertUserFavourite(crossRef: UserFavouriteCrossRef)
+
     @Query("DELETE FROM user_favourite_cross_ref WHERE userId = :userId")
     suspend fun deleteFavouritesForUser(userId: Int)
+
+    @Query("DELETE FROM user_favourite_cross_ref WHERE userId = :userId AND movieImdbId = :movieImdbId")
+    suspend fun deleteUserFavourite(userId: Int, movieImdbId: String)
+
+    @Query("SELECT COUNT(*) > 0 FROM user_favourite_cross_ref WHERE userId = :userId AND movieImdbId = :movieId")
+    suspend fun isFavourite(userId: Int, movieId: String): Boolean
 
     @Transaction
     @Query("""

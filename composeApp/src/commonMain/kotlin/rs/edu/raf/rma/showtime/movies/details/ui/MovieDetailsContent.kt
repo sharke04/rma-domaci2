@@ -21,7 +21,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PlayCircle
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -53,7 +57,9 @@ fun MovieDetailsContent(
     images: List<Image>,
     actors: List<Actor>,
     video: Video?,
-    onBack: () -> Unit
+    isFavourite: Boolean?,
+    onBack: () -> Unit,
+    onToggleFavourite: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -131,6 +137,28 @@ fun MovieDetailsContent(
                 Text(
                     text = "${movie.year} • ${movie.runtime} min",
                     color = Color.LightGray
+                )
+            }
+        }
+
+        if (isFavourite != null) {
+            Button(
+                onClick = onToggleFavourite,
+                modifier = Modifier.padding(start = 16.dp, top = 12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (isFavourite) Color.Red else Color.DarkGray,
+                ),
+                shape = RoundedCornerShape(50),
+            ) {
+                Icon(
+                    imageVector = if (isFavourite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp),
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = if (isFavourite) "In Favourites" else "Add to Favourites",
+                    fontWeight = Bold,
                 )
             }
         }

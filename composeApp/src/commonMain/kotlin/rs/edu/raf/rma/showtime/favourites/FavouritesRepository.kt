@@ -14,6 +14,9 @@ import rs.edu.raf.rma.showtime.domain.Movie
 interface FavouritesRepository {
     suspend fun sync(): Int
     fun observeFavourites(userId: Int): Flow<List<Movie>>
+    suspend fun isFavourite(movieId: String): Boolean
+    suspend fun addFavourite(movieId: String)
+    suspend fun removeFavourite(movieId: String)
 }
 
 class FavouritesRepositoryImpl(
@@ -45,4 +48,21 @@ class FavouritesRepositoryImpl(
         db.showtimeDao()
             .observeFavouriteMovies(userId)
             .map { list -> list.map { it.toDomain() } }
+
+    override suspend fun isFavourite(movieId: String): Boolean {
+        val userId = showtimeApi.getProfile().id
+        return db.showtimeDao().isFavourite(userId, movieId)
+    }
+
+    override suspend fun addFavourite(movieId: String) {
+        val userId = showtimeApi.getProfile().id
+        showtimeApi.addFavorite(movieId)
+        db.showtimeDao().insertUserFavourite(UserFavouriteCrossRef(userId, movieId))
+    }
+
+    override suspend fun removeFavourite(movieId: String) {
+        val userId = showtimeApi.getProfile().id
+        showtimeApi.removeFavorite(movieId)
+        db.showtimeDao().deleteUserFavourite(userId, movieId)
+    }
 }
