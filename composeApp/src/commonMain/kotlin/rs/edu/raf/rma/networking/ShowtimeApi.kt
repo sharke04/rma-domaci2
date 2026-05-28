@@ -19,4 +19,13 @@ interface ShowtimeApi {
 
     @DELETE("me/favorites/{movie_id}")
     suspend fun removeFavorite(@Path("movie_id") movieId: String)
+
+    @GET("/me/watchlist")
+    suspend fun getWatchlist(): List<MovieListItemApiModel>
+
+    @POST("me/watchlist/{movie_id}")
+    suspend fun addToWatchlist(@Path("movie_id") movieId: String)
+
+    @DELETE("me/watchlist/{movie_id}")
+    suspend fun removeFromWatchlist(@Path("movie_id") movieId: String)
 }
