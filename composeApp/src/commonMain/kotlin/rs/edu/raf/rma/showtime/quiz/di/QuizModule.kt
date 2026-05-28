@@ -6,6 +6,6 @@ import rs.edu.raf.rma.showtime.quiz.QuizGenerator
 import rs.edu.raf.rma.showtime.quiz.QuizViewModel
 
 val quizModule = module {
-    single { QuizGenerator(get()) }
+    single { QuizGenerator(get(), get()) }
     viewModelOf(::QuizViewModel)
 }

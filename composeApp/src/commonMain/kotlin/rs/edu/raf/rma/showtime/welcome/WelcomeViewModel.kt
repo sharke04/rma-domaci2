@@ -29,7 +29,7 @@ class WelcomeViewModel(
 
     private fun refreshMovies() {
         viewModelScope.launch {
-            runCatching { showtimeRepository.refreshMovies() }
+            showtimeRepository.refreshMovies()
         }
     }
 

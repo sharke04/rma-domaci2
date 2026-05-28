@@ -22,4 +22,5 @@ interface ShowtimeRepository {
     suspend fun refreshMovieImages(movieId: String)
     suspend fun refreshMovieVideos(movieId: String)
     suspend fun refreshMovieActors(movieId: String)
+    suspend fun refreshActorsForMovies(movieIds: List<String>)
 }

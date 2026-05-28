@@ -1,5 +1,8 @@
 package rs.edu.raf.rma.showtime.data
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import rs.edu.raf.rma.core.db.AppDatabase
@@ -86,6 +89,14 @@ class ShowtimeRepositoryImpl(
         appDatabase.showtimeDao().upsertActors(
             actors.items.map { it.toEntity(movieId) }
         )
+    }
+
+    override suspend fun refreshActorsForMovies(movieIds: List<String>) {
+        coroutineScope {
+            movieIds.map {
+                id -> async { refreshMovieActors(id) }
+            }.awaitAll()
+        }
     }
 
     override suspend fun refreshMovies() {

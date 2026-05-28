@@ -2,9 +2,13 @@ package rs.edu.raf.rma.showtime.quiz
 
 import rs.edu.raf.rma.core.db.AppDatabase
 import rs.edu.raf.rma.showtime.db.MovieEntity
+import rs.edu.raf.rma.showtime.domain.ShowtimeRepository
 import kotlin.random.Random
 
-class QuizGenerator(private val db: AppDatabase) {
+class QuizGenerator(
+    private val db: AppDatabase,
+    private val repository: ShowtimeRepository,
+) {
 
     private enum class QuizType { GUESS_MOVIE, GUESS_YEAR, GUESS_ACTOR }
 
@@ -14,16 +18,17 @@ class QuizGenerator(private val db: AppDatabase) {
             throw IllegalStateException("Not enough movies in the database. Try opening the app a moment to let movies load.")
         }
 
-        val pool = db.showtimeDao().getRandomMovies(30)
+        val moviesPool = db.showtimeDao().getRandomMovies(30)
+        repository.refreshActorsForMovies(moviesPool.map { it.id })
         val types = buildTypeList()
         val questions = mutableListOf<QuizQuestion>()
         val usedIds = mutableSetOf<String>()
 
         for (type in types) {
-            val candidates = pool.filter { it.id !in usedIds }
-            val result = tryBuildQuestion(type, candidates, pool)
-                ?: tryBuildQuestion(QuizType.GUESS_YEAR, candidates, pool)
-                ?: tryBuildQuestion(QuizType.GUESS_MOVIE, candidates, pool)
+            val candidates = moviesPool.filter { it.id !in usedIds }
+            val result = tryBuildQuestion(type, candidates, moviesPool)
+                ?: tryBuildQuestion(QuizType.GUESS_YEAR, candidates, moviesPool)
+                ?: tryBuildQuestion(QuizType.GUESS_MOVIE, candidates, moviesPool)
                 ?: continue
             questions.add(result.first)
             usedIds.add(result.second)
