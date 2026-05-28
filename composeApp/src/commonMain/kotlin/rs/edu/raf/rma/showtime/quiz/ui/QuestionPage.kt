@@ -41,8 +41,8 @@ fun QuestionPage(
         AsyncImage(
             model = question.imageUrl,
             contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxWidth().height(260.dp),
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.fillMaxWidth().height(300.dp),
         )
 
         val title = when (question) {

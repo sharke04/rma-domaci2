@@ -56,7 +56,7 @@ class QuizGenerator(private val db: AppDatabase) {
 
     private fun buildGuessMovie(movie: MovieEntity, pool: List<MovieEntity>): QuizQuestion? {
         val imagePath = movie.backdropPath ?: movie.posterPath ?: return null
-        val imageUrl = "https://image.tmdb.org/t/p/w780$imagePath"
+        val imageUrl = "https://image.tmdb.org/t/p/w500$imagePath"
 
         val wrongTitles = pool
             .filter { it.id != movie.id && it.title.isNotBlank() }
