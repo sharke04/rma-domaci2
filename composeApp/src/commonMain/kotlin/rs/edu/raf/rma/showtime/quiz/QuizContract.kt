@@ -1,5 +1,7 @@
 package rs.edu.raf.rma.showtime.quiz
 
+import kotlin.math.roundToInt
+
 interface QuizContract {
     enum class Phase { Loading, Active, Result }
 
@@ -9,13 +11,14 @@ interface QuizContract {
         val currentIndex: Int = 0,
         val answers: List<Int?> = emptyList(),
         val timeRemaining: Int = 60,
+        val timeAtFinish: Int = 0,
+        val correctCount: Int = 0,
         val showAbandonDialog: Boolean = false,
         val navigateUp: Boolean = false,
         val error: String? = null,
     ) {
-        val correctCount get() = answers.zip(questions).count { (a, q) -> a != null && a == q.correctAnswerIndex }
         val incorrectCount get() = answers.count { it != null } - correctCount
-        val score get() = correctCount * 10
+        val score get() = (correctCount * (9.0 + timeAtFinish / 60.0)).roundToInt()
         val timeUsed get() = 60 - timeRemaining
     }
 

@@ -88,7 +88,7 @@ class QuizViewModel(
     private fun finishQuiz() {
         timerJob?.cancel()
         timerJob = null
-        setState { copy(phase = QuizContract.Phase.Result) }
+        setState { copy(phase = QuizContract.Phase.Result, timeAtFinish = timeRemaining) }
     }
 
     private fun recordAnswer(answerIndex: Int) {
@@ -96,8 +96,14 @@ class QuizViewModel(
         if (_state.value.phase != QuizContract.Phase.Active) return
         if (_state.value.answers.getOrNull(currentIdx) != null) return
 
+        val isCorrect = answerIndex == _state.value.questions[currentIdx].correctAnswerIndex
         val newAnswers = _state.value.answers.toMutableList().also { it[currentIdx] = answerIndex }
-        setState { copy(answers = newAnswers) }
+        setState {
+            copy(
+                answers = newAnswers,
+                correctCount = if (isCorrect) correctCount + 1 else correctCount,
+            )
+        }
 
         viewModelScope.launch {
             delay(800)
