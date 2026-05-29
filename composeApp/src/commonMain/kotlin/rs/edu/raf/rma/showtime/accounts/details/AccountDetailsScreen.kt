@@ -160,6 +160,20 @@ private fun AccountDetailsScreen(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold,
                     )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Text(
+                        text = "Watchlist Movies",
+                        color = Color.Gray,
+                        fontSize = 14.sp,
+                    )
+                    Text(
+                        text = state.watchlistSize.toString(),
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                    )
                 }
             }
         }

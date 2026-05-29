@@ -141,6 +141,13 @@ interface ShowtimeDao {
     """)
     fun observeWatchlistMovies(userId: Int): Flow<List<MovieWithGenres>>
 
+    @Query("""
+        SELECT COUNT(*) FROM movies
+        INNER JOIN user_watchlist_cross_ref ON movies.id = user_watchlist_cross_ref.movieImdbId
+        WHERE user_watchlist_cross_ref.userId = :userId
+    """)
+    fun observeNumberOfWatchlistMovies(userId: Int): Flow<Int>
+
     @Query("SELECT * FROM actors WHERE movieId = :movieId")
     suspend fun getActorsForMovie(movieId: String): List<ActorEntity>
 

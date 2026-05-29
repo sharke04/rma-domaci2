@@ -14,6 +14,7 @@ import rs.edu.raf.rma.showtime.domain.Movie
 interface WatchlistRepository {
     suspend fun sync(): Int
     fun observeWatchlist(userId: Int): Flow<List<Movie>>
+    fun observeNumberOfWatchlistedMovies(userId: Int): Flow<Int>
     suspend fun isWatchlisted(movieId: String): Boolean
     suspend fun addToWatchlist(movieId: String)
     suspend fun removeFromWatchlist(movieId: String)
@@ -48,6 +49,10 @@ class WatchlistRepositoryImpl(
         db.showtimeDao()
             .observeWatchlistMovies(userId)
             .map { list -> list.map { it.toDomain() } }
+
+    override fun observeNumberOfWatchlistedMovies(userId: Int): Flow<Int> =
+        db.showtimeDao()
+            .observeNumberOfWatchlistMovies(userId)
 
     override suspend fun isWatchlisted(movieId: String): Boolean {
         val userId = showtimeApi.getProfile().id

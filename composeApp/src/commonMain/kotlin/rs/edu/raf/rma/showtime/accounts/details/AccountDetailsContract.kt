@@ -7,6 +7,7 @@ interface AccountDetailsContract {
         val fullName: String? = null,
         val username: String? = null,
         val favourites: Int = 0,
+        val watchlistSize: Int = 0,
     )
 
     sealed interface UiEvent {

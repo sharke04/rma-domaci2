@@ -11,11 +11,13 @@ import kotlinx.coroutines.launch
 import rs.edu.raf.rma.core.auth.AuthStore
 import rs.edu.raf.rma.networking.ShowtimeApi
 import rs.edu.raf.rma.showtime.favourites.FavouritesRepository
+import rs.edu.raf.rma.showtime.watchlist.WatchlistRepository
 
 class AccountDetailsViewModel(
     private val showtimeApi: ShowtimeApi,
     private val authStore: AuthStore,
     private val favouritesRepository: FavouritesRepository,
+    private val watchlistRepository: WatchlistRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AccountDetailsContract.UiState())
@@ -56,6 +58,7 @@ class AccountDetailsViewModel(
                 val profile = showtimeApi.getProfile()
                 setState { copy(fullName = profile.fullName, username = profile.username) }
                 observeFavouritesNumber(profile.id)
+                observeWatchlistNumber(profile.id)
             } catch (_: Exception) {
                 setState { copy(error = "Failed to load profile.") }
             }
@@ -74,6 +77,14 @@ class AccountDetailsViewModel(
         viewModelScope.launch {
             favouritesRepository.observeNumberOfFavourites(userId).collect { count ->
                 setState { copy(favourites = count) }
+            }
+        }
+    }
+
+    private fun observeWatchlistNumber(userId: Int) {
+        viewModelScope.launch {
+            watchlistRepository.observeNumberOfWatchlistedMovies(userId).collect { count ->
+                setState { copy(watchlistSize = count) }
             }
         }
     }
