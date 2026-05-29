@@ -21,6 +21,7 @@ import rs.edu.raf.rma.showtime.db.MovieGenreCrossRef
 import rs.edu.raf.rma.showtime.db.ShowtimeDao
 import rs.edu.raf.rma.showtime.db.UserEntity
 import rs.edu.raf.rma.showtime.db.UserFavouriteCrossRef
+import rs.edu.raf.rma.showtime.db.UserWatchlistCrossRef
 import rs.edu.raf.rma.showtime.db.VideoEntity
 
 @Database(
@@ -37,8 +38,9 @@ import rs.edu.raf.rma.showtime.db.VideoEntity
         ActorEntity::class,
         UserEntity::class,
         UserFavouriteCrossRef::class,
+        UserWatchlistCrossRef::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = true,
 )
 @TypeConverters(DateConverters::class)

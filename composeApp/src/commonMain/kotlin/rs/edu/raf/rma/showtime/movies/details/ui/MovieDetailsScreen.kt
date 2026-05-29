@@ -71,8 +71,10 @@ private fun MovieDetailsScreen(
                         actors = state.actors,
                         video = state.video,
                         isFavourite = state.isFavourite,
+                        isWatchlisted = state.isWatchlisted,
                         onBack = onClose,
                         onToggleFavourite = { eventPublisher(MovieDetailsContract.UiEvent.ToggleFavourite) },
+                        onToggleWatchlist = { eventPublisher(MovieDetailsContract.UiEvent.ToggleWatchlist) },
                     )
                 }
             }

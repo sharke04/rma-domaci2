@@ -18,12 +18,14 @@ import rs.edu.raf.rma.networking.model.ApiErrorResponse
 import rs.edu.raf.rma.showtime.domain.ShowtimeRepository
 import rs.edu.raf.rma.showtime.favourites.FavouritesRepository
 import rs.edu.raf.rma.showtime.movieIdOrThrow
+import rs.edu.raf.rma.showtime.watchlist.WatchlistRepository
 
 class MovieDetailsViewModel(
     //TODO: Videti cemu sluzi SavedStateHandle
     private val savedStateHandle: SavedStateHandle,
     private val showtimeRepository: ShowtimeRepository,
     private val favouritesRepository: FavouritesRepository,
+    private val watchlistRepository: WatchlistRepository,
     private val authStore: AuthStore,
 ) : ViewModel() {
     private val _state = MutableStateFlow(MovieDetailsContract.UiState())
@@ -56,6 +58,7 @@ class MovieDetailsViewModel(
             events.collect { event ->
                 when (event) {
                     MovieDetailsContract.UiEvent.ToggleFavourite -> toggleFavourite()
+                    MovieDetailsContract.UiEvent.ToggleWatchlist -> toggleWatchlist()
                     MovieDetailsContract.UiEvent.Retry -> loadMovieDetails()
                 }
             }
@@ -66,8 +69,11 @@ class MovieDetailsViewModel(
         viewModelScope.launch {
             authStore.authState.collect { authState ->
                 when (authState) {
-                    is AuthState.Authenticated -> loadIsFavourite()
-                    AuthState.Unauthenticated -> setState { copy(isFavourite = null) }
+                    is AuthState.Authenticated -> {
+                        loadIsFavourite()
+                        loadIsWatchlisted()
+                    }
+                    AuthState.Unauthenticated -> setState { copy(isFavourite = null, isWatchlisted = null) }
                 }
             }
         }
@@ -80,6 +86,13 @@ class MovieDetailsViewModel(
         }
     }
 
+    private fun loadIsWatchlisted() {
+        viewModelScope.launch {
+            val watchlisted = watchlistRepository.isWatchlisted(movieId)
+            setState { copy(isWatchlisted = watchlisted) }
+        }
+    }
+
     private fun toggleFavourite() {
         val current = state.value.isFavourite ?: return
         setState { copy(isFavourite = !current) }
@@ -89,6 +102,19 @@ class MovieDetailsViewModel(
                 else favouritesRepository.removeFavourite(movieId)
             } catch (_: Exception) {
                 setState { copy(isFavourite = current) }
+            }
+        }
+    }
+
+    private fun toggleWatchlist() {
+        val current = state.value.isWatchlisted ?: return
+        setState { copy(isWatchlisted = !current) }
+        viewModelScope.launch {
+            try {
+                if (!current) watchlistRepository.addToWatchlist(movieId)
+                else watchlistRepository.removeFromWatchlist(movieId)
+            } catch (_: Exception) {
+                setState { copy(isWatchlisted = current) }
             }
         }
     }

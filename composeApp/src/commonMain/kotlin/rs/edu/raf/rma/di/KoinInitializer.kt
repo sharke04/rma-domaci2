@@ -12,6 +12,7 @@ import rs.edu.raf.rma.posts.splash.di.splashModule
 import rs.edu.raf.rma.showtime.accounts.di.accountsModule
 import rs.edu.raf.rma.showtime.favourites.di.favouritesModule
 import rs.edu.raf.rma.showtime.movies.di.moviesModule
+import rs.edu.raf.rma.showtime.watchlist.di.watchlistModule
 import rs.edu.raf.rma.showtime.quiz.di.quizModule
 import rs.edu.raf.rma.showtime.welcome.di.welcomeModule
 
@@ -27,6 +28,7 @@ fun initKoin(config: KoinAppDeclaration? = null): KoinApplication {
             postsModule,
             moviesModule,
             favouritesModule,
+            watchlistModule,
             accountsModule,
             welcomeModule,
             quizModule,

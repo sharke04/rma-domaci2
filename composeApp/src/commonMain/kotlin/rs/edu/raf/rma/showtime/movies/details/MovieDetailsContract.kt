@@ -14,10 +14,12 @@ interface MovieDetailsContract {
         val video: Video? = null,
         val error: Throwable? = null,
         val isFavourite: Boolean? = null,
+        val isWatchlisted: Boolean? = null,
     )
 
     sealed interface UiEvent {
         data object ToggleFavourite : UiEvent
+        data object ToggleWatchlist : UiEvent
         data object Retry : UiEvent
     }
 }

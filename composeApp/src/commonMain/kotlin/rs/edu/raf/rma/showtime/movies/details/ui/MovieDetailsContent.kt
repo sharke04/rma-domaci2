@@ -21,6 +21,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PlayCircle
@@ -58,8 +60,10 @@ fun MovieDetailsContent(
     actors: List<Actor>,
     video: Video?,
     isFavourite: Boolean?,
+    isWatchlisted: Boolean?,
     onBack: () -> Unit,
     onToggleFavourite: () -> Unit,
+    onToggleWatchlist: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -141,25 +145,49 @@ fun MovieDetailsContent(
             }
         }
 
-        if (isFavourite != null) {
-            Button(
-                onClick = onToggleFavourite,
-                modifier = Modifier.padding(start = 16.dp, top = 12.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isFavourite) Color.Red else Color.DarkGray,
-                ),
-                shape = RoundedCornerShape(50),
-            ) {
-                Icon(
-                    imageVector = if (isFavourite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp),
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = if (isFavourite) "In Favourites" else "Add to Favourites",
-                    fontWeight = Bold,
-                )
+        Row(
+            modifier = Modifier.padding(start = 16.dp, top = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            if (isFavourite != null) {
+                Button(
+                    onClick = onToggleFavourite,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (isFavourite) Color.Red else Color.DarkGray,
+                    ),
+                    shape = RoundedCornerShape(50),
+                ) {
+                    Icon(
+                        imageVector = if (isFavourite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = if (isFavourite) "In Favourites" else "Add to Favourites",
+                        fontWeight = Bold,
+                    )
+                }
+            }
+            if (isWatchlisted != null) {
+                Button(
+                    onClick = onToggleWatchlist,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (isWatchlisted) Color(0xFF1565C0) else Color.DarkGray,
+                    ),
+                    shape = RoundedCornerShape(50),
+                ) {
+                    Icon(
+                        imageVector = if (isWatchlisted) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = if (isWatchlisted) "In Watchlist" else "Add to Watchlist",
+                        fontWeight = Bold,
+                    )
+                }
             }
         }
 

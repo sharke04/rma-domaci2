@@ -34,6 +34,7 @@ fun ShowtimeWelcomeScreen(
     onMoviesClick: () -> Unit,
     onAccountClick: () -> Unit,
     onFavouritesClick: () -> Unit,
+    onWatchlistClick: () -> Unit,
     onQuizClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
@@ -45,6 +46,7 @@ fun ShowtimeWelcomeScreen(
         onMoviesClick = onMoviesClick,
         onAccountClick = onAccountClick,
         onFavouritesClick = onFavouritesClick,
+        onWatchlistClick = onWatchlistClick,
         onQuizClick = onQuizClick,
     )
 }
@@ -57,6 +59,7 @@ private fun ShowtimeWelcomeScreen(
     onMoviesClick: () -> Unit,
     onAccountClick: () -> Unit,
     onFavouritesClick: () -> Unit,
+    onWatchlistClick: () -> Unit,
     onQuizClick: () -> Unit,
 ) {
     Box(
@@ -147,6 +150,17 @@ private fun ShowtimeWelcomeScreen(
                     shape = RoundedCornerShape(50),
                 ) {
                     Text(text = "Favourites", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = onWatchlistClick,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                    shape = RoundedCornerShape(50),
+                ) {
+                    Text(text = "Watchlist", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))

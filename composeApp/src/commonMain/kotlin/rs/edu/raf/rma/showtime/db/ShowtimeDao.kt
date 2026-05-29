@@ -110,6 +110,29 @@ interface ShowtimeDao {
     @Query("SELECT * FROM movies WHERE id IN (SELECT DISTINCT movieId FROM images) ORDER BY RANDOM() LIMIT :limit")
     suspend fun getRandomMoviesWithImages(limit: Int): List<MovieEntity>
 
+    @Upsert
+    suspend fun upsertUserWatchlist(crossRefs: List<UserWatchlistCrossRef>)
+
+    @Upsert
+    suspend fun insertUserWatchlist(crossRef: UserWatchlistCrossRef)
+
+    @Query("DELETE FROM user_watchlist_cross_ref WHERE userId = :userId")
+    suspend fun deleteWatchlistForUser(userId: Int)
+
+    @Query("DELETE FROM user_watchlist_cross_ref WHERE userId = :userId AND movieImdbId = :movieImdbId")
+    suspend fun deleteUserWatchlist(userId: Int, movieImdbId: String)
+
+    @Query("SELECT COUNT(*) > 0 FROM user_watchlist_cross_ref WHERE userId = :userId AND movieImdbId = :movieId")
+    suspend fun isWatchlisted(userId: Int, movieId: String): Boolean
+
+    @Transaction
+    @Query("""
+        SELECT movies.* FROM movies
+        INNER JOIN user_watchlist_cross_ref ON movies.id = user_watchlist_cross_ref.movieImdbId
+        WHERE user_watchlist_cross_ref.userId = :userId
+    """)
+    fun observeWatchlistMovies(userId: Int): Flow<List<MovieWithGenres>>
+
     @Query("SELECT * FROM actors WHERE movieId = :movieId")
     suspend fun getActorsForMovie(movieId: String): List<ActorEntity>
 
