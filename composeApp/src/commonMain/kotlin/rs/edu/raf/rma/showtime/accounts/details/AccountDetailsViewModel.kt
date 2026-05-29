@@ -10,10 +10,12 @@ import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import rs.edu.raf.rma.core.auth.AuthStore
 import rs.edu.raf.rma.networking.ShowtimeApi
+import rs.edu.raf.rma.showtime.favourites.FavouritesRepository
 
 class AccountDetailsViewModel(
     private val showtimeApi: ShowtimeApi,
     private val authStore: AuthStore,
+    private val favouritesRepository: FavouritesRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AccountDetailsContract.UiState())
@@ -53,6 +55,7 @@ class AccountDetailsViewModel(
             try {
                 val profile = showtimeApi.getProfile()
                 setState { copy(fullName = profile.fullName, username = profile.username) }
+                observeFavouritesNumber(profile.id)
             } catch (_: Exception) {
                 setState { copy(error = "Failed to load profile.") }
             }
@@ -64,6 +67,14 @@ class AccountDetailsViewModel(
         viewModelScope.launch {
             authStore.clearAuthData()
             _effects.emit(AccountDetailsContract.UiEffect.LogoutSuccess)
+        }
+    }
+
+    private fun observeFavouritesNumber(userId: Int) {
+        viewModelScope.launch {
+            favouritesRepository.observeNumberOfFavourites(userId).collect { count ->
+                setState { copy(favourites = count) }
+            }
         }
     }
 }

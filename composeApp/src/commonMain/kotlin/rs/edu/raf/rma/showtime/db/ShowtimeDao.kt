@@ -98,6 +98,14 @@ interface ShowtimeDao {
     """)
     fun observeFavouriteMovies(userId: Int): Flow<List<MovieWithGenres>>
 
+    @Transaction
+    @Query("""
+        SELECT COUNT(*) FROM movies
+        INNER JOIN user_favourite_cross_ref ON movies.id = user_favourite_cross_ref.movieImdbId
+        WHERE user_favourite_cross_ref.userId = :userId
+    """)
+    fun observeNumberOfFavouriteMovies(userId: Int): Flow<Int>
+
     @Query("SELECT COUNT(*) FROM movies")
     suspend fun getMovieCount(): Int
 

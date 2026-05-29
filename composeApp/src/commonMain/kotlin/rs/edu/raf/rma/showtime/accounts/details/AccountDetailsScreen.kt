@@ -37,6 +37,7 @@ fun AccountDetailsScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
+    // TODO: Deluje da ovo moze bolje da se uradi
     LaunchedEffect(Unit) {
         viewModel.effects.collect { effect ->
             when (effect) {
@@ -141,6 +142,20 @@ private fun AccountDetailsScreen(
                     )
                     Text(
                         text = state.username ?: "-",
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Text(
+                        text = "Favourite Movies",
+                        color = Color.Gray,
+                        fontSize = 14.sp,
+                    )
+                    Text(
+                        text = state.favourites.toString(),
                         color = Color.White,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold,
