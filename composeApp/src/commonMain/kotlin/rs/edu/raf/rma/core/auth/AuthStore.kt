@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.runBlocking
 import rs.edu.raf.rma.core.auth.model.AuthData
 import rs.edu.raf.rma.core.auth.model.AuthState
 import rs.edu.raf.rma.core.auth.model.asAuthenticationState
@@ -18,34 +17,15 @@ import rs.edu.raf.rma.core.auth.model.asAuthenticationState
 class AuthStore(
     private val persistence: DataStore<AuthData>,
 ) {
-
     private val scope = CoroutineScope(Dispatchers.IO)
-
-    private val authData = persistence.data
-        .stateIn(
-            scope = scope,
-            started = SharingStarted.Eagerly,
-            initialValue = runBlocking { persistence.data.first() },
-        )
 
     suspend fun setAuthData(authData: AuthData) =
         persistence.updateData {
             authData
         }
 
-    suspend fun setAccessToken(accessToken: String) =
-        persistence.updateData {
-            it.copy(accessToken = accessToken)
-        }
-
     suspend fun clearAuthData() =
         persistence.updateData { AuthData.empty() }
-
-
-
-
-
-    
 
     val authState: StateFlow<AuthState> = persistence.data
         .map { it.asAuthenticationState() }
@@ -56,19 +36,7 @@ class AuthStore(
             initialValue = AuthState.Unauthenticated
         )
 
-    suspend fun awaitInitialAuthState(): AuthState {
-        return persistence.data
-            .map { it.asAuthenticationState() }
-            .first()
-    }
-
-    /**
-     * The id of the currently authenticated user, read from persisted auth data.
-     * Avoids a network round-trip for operations that only need the user id.
-     */
     suspend fun requireUserId(): Int =
         persistence.data.first().userId
             ?: throw IllegalStateException("No authenticated user id available")
-
-
 }
