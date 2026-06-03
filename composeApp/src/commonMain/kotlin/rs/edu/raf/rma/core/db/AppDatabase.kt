@@ -18,6 +18,7 @@ import rs.edu.raf.rma.showtime.db.GenreEntity
 import rs.edu.raf.rma.showtime.db.ImageEntity
 import rs.edu.raf.rma.showtime.db.MovieEntity
 import rs.edu.raf.rma.showtime.db.MovieGenreCrossRef
+import rs.edu.raf.rma.showtime.db.QuizResultEntity
 import rs.edu.raf.rma.showtime.db.ShowtimeDao
 import rs.edu.raf.rma.showtime.db.UserEntity
 import rs.edu.raf.rma.showtime.db.UserFavouriteCrossRef
@@ -39,8 +40,9 @@ import rs.edu.raf.rma.showtime.db.VideoEntity
         UserEntity::class,
         UserFavouriteCrossRef::class,
         UserWatchlistCrossRef::class,
+        QuizResultEntity::class,
     ],
-    version = 4,
+    version = 5,
     exportSchema = true,
 )
 @TypeConverters(DateConverters::class)
