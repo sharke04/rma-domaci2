@@ -1,5 +1,7 @@
 package rs.edu.raf.rma.showtime.accounts.details
 
+import rs.edu.raf.rma.showtime.domain.QuizResult
+
 interface AccountDetailsContract {
     data class UiState(
         val isLoading: Boolean = false,
@@ -8,6 +10,7 @@ interface AccountDetailsContract {
         val username: String? = null,
         val favourites: Int = 0,
         val watchlistSize: Int = 0,
+        val bestQuizResult: QuizResult? = null,
     )
 
     sealed interface UiEvent {

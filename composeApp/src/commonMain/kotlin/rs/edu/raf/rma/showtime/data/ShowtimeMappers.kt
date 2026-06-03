@@ -13,12 +13,14 @@ import rs.edu.raf.rma.showtime.db.ImageEntity
 import rs.edu.raf.rma.showtime.db.MovieEntity
 import rs.edu.raf.rma.showtime.db.MovieGenreCrossRef
 import rs.edu.raf.rma.showtime.db.MovieWithGenres
+import rs.edu.raf.rma.showtime.db.QuizResultEntity
 import rs.edu.raf.rma.showtime.db.UserEntity
 import rs.edu.raf.rma.showtime.db.VideoEntity
 import rs.edu.raf.rma.showtime.domain.Actor
 import rs.edu.raf.rma.showtime.domain.Genre
 import rs.edu.raf.rma.showtime.domain.Image
 import rs.edu.raf.rma.showtime.domain.Movie
+import rs.edu.raf.rma.showtime.domain.QuizResult
 import rs.edu.raf.rma.showtime.domain.Video
 
 fun MovieListItemApiModel.toMovieEntity() = MovieEntity(
@@ -151,4 +153,11 @@ fun MovieWithGenres.toDomain() = Movie(
     backdropPath = movie.backdropPath,
     homepage = movie.homepage,
     genres = genres.map { it.toDomain() },
+)
+
+fun QuizResultEntity.toDomain() = QuizResult(
+    id = id,
+    timeUsed = timeUsed,
+    points = points,
+    finishedAt = finishedAt,
 )

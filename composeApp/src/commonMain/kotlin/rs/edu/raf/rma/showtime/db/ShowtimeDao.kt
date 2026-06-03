@@ -158,6 +158,9 @@ interface ShowtimeDao {
     @Insert
     suspend fun insertQuizResult(result: QuizResultEntity)
 
+    @Query("SELECT * FROM quiz_results WHERE userId = :userId ORDER BY points DESC, finishedAt DESC LIMIT 1")
+    fun observeBestQuizResult(userId: Int): Flow<QuizResultEntity?>
+
     @Transaction
     suspend fun refreshListTransaction(
         movies: List<MovieEntity>,

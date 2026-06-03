@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.datetime.LocalDateTime
 
 @Composable
 fun AccountDetailsScreen(
@@ -174,8 +175,40 @@ private fun AccountDetailsScreen(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold,
                     )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Text(
+                        text = "Best Quiz Result",
+                        color = Color.Gray,
+                        fontSize = 14.sp,
+                    )
+                    val bestResult = state.bestQuizResult
+                    if (bestResult != null) {
+                        Text(
+                            text = "${bestResult.points} points",
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.SemiBold,
+                        )
+                        Text(
+                            text = bestResult.finishedAt.formatted(),
+                            color = Color.Gray,
+                            fontSize = 13.sp,
+                        )
+                    } else {
+                        Text(
+                            text = "No quizzes played yet",
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.SemiBold,
+                        )
+                    }
                 }
             }
         }
     }
 }
+
+private fun LocalDateTime.formatted(): String =
+    toString().replace('T', ' ').take(16)
