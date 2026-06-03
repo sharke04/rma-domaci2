@@ -3,7 +3,6 @@ package rs.edu.raf.rma
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import rs.edu.raf.rma.di.initKoin
-import rs.edu.raf.rma.posts.PostsApp
 import rs.edu.raf.rma.showtime.ShowtimeApp
 
 fun main() {
@@ -13,8 +12,6 @@ fun main() {
             onCloseRequest = ::exitApplication,
             title = "Demo",
         ) {
-//            PasswordsApp()
-//            PostsApp()
             ShowtimeApp()
         }
     }

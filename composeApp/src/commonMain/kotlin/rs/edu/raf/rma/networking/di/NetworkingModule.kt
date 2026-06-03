@@ -13,12 +13,10 @@ import kotlinx.coroutines.runBlocking
 import org.koin.dsl.module
 import rs.edu.raf.rma.core.auth.AuthStore
 import rs.edu.raf.rma.core.auth.model.AuthState
-import rs.edu.raf.rma.networking.BeskarApi
 import rs.edu.raf.rma.networking.HttpClientFactory
 import rs.edu.raf.rma.networking.MoviesApi
 import rs.edu.raf.rma.networking.AccountsApi
 import rs.edu.raf.rma.networking.ShowtimeApi
-import rs.edu.raf.rma.networking.createBeskarApi
 import rs.edu.raf.rma.networking.createMoviesApi
 import rs.edu.raf.rma.networking.createAccountsApi
 import rs.edu.raf.rma.networking.createShowtimeApi
@@ -67,15 +65,6 @@ val networkingModule = module {
         HttpClientFactory.createHttpClientWithDefaultConfig {
             installAuthPlugin(authStoreLazy)
         }
-    }
-
-    // TODO: Mozda treba obrisati Beskar API
-    single<BeskarApi> {
-        Ktorfit.Builder()
-            .httpClient(get<HttpClient>(Qualifiers.Unauthenticated))
-            .baseUrl("https://rma.finlab.rs/beskar/")
-            .build()
-            .createBeskarApi()
     }
 
     single<MoviesApi> {
