@@ -1,6 +1,7 @@
 package rs.edu.raf.rma.showtime.db
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
@@ -153,6 +154,9 @@ interface ShowtimeDao {
 
     @Query("SELECT * FROM actors WHERE movieId NOT IN (:excludeMovieIds) ORDER BY RANDOM() LIMIT :limit")
     suspend fun getRandomActorsExcluding(excludeMovieIds: List<String>, limit: Int): List<ActorEntity>
+
+    @Insert
+    suspend fun insertQuizResult(result: QuizResultEntity)
 
     @Transaction
     suspend fun refreshListTransaction(

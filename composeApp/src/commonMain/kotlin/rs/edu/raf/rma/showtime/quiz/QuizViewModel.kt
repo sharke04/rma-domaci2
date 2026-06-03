@@ -2,6 +2,7 @@ package rs.edu.raf.rma.showtime.quiz
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class QuizViewModel(
     private val generator: QuizGenerator,
+    private val quizResultsRepository: QuizResultsRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(QuizContract.UiState())
@@ -89,6 +91,18 @@ class QuizViewModel(
         timerJob?.cancel()
         timerJob = null
         setState { copy(phase = QuizContract.Phase.Result, timeAtFinish = timeRemaining) }
+        saveResult()
+    }
+
+    private fun saveResult() {
+        val result = _state.value
+        viewModelScope.launch {
+            try {
+                quizResultsRepository.saveResult(timeUsed = result.timeUsed, points = result.score)
+            } catch (e: Exception) {
+                Napier.e(e) { "Failed to save quiz result" }
+            }
+        }
     }
 
     private fun recordAnswer(answerIndex: Int) {
