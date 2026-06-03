@@ -8,6 +8,6 @@ import rs.edu.raf.rma.showtime.favourites.FavouritesRepositoryImpl
 import rs.edu.raf.rma.showtime.favourites.FavouritesViewModel
 
 val favouritesModule = module {
-    single { FavouritesRepositoryImpl(db = get(), showtimeApi = get()) } bind FavouritesRepository::class
+    single { FavouritesRepositoryImpl(db = get(), showtimeApi = get(), authStore = get()) } bind FavouritesRepository::class
     viewModelOf(::FavouritesViewModel)
 }

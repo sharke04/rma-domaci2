@@ -10,6 +10,6 @@ import rs.edu.raf.rma.showtime.quiz.QuizViewModel
 
 val quizModule = module {
     single { QuizGenerator(get(), get()) }
-    single { QuizResultsRepositoryImpl(db = get(), showtimeApi = get()) } bind QuizResultsRepository::class
+    single { QuizResultsRepositoryImpl(db = get(), authStore = get()) } bind QuizResultsRepository::class
     viewModelOf(::QuizViewModel)
 }

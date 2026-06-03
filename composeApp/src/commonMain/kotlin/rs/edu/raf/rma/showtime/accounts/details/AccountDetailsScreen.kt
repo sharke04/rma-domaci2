@@ -38,7 +38,6 @@ fun AccountDetailsScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    // TODO: Deluje da ovo moze bolje da se uradi
     LaunchedEffect(Unit) {
         viewModel.effects.collect { effect ->
             when (effect) {

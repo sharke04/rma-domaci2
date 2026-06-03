@@ -8,6 +8,6 @@ import rs.edu.raf.rma.showtime.watchlist.WatchlistRepositoryImpl
 import rs.edu.raf.rma.showtime.watchlist.WatchlistViewModel
 
 val watchlistModule = module {
-    single { WatchlistRepositoryImpl(db = get(), showtimeApi = get()) } bind WatchlistRepository::class
+    single { WatchlistRepositoryImpl(db = get(), showtimeApi = get(), authStore = get()) } bind WatchlistRepository::class
     viewModelOf(::WatchlistViewModel)
 }

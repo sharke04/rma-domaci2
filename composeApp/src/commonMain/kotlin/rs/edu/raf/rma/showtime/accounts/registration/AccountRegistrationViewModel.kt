@@ -87,7 +87,8 @@ class AccountRegistrationViewModel(
                 authStore.setAuthData(
                     AuthData(
                         accessToken = response.accessToken,
-                        username = response.user.username
+                        username = response.user.username,
+                        userId = response.user.id,
                     )
                 )
                 setState { copy(registrationSuccessful = true) }
@@ -129,7 +130,8 @@ class AccountRegistrationViewModel(
                 authStore.setAuthData(
                     AuthData(
                         accessToken = response.accessToken,
-                        username = response.user.username
+                        username = response.user.username,
+                        userId = response.user.id,
                     )
                 )
                 setState { copy(loginSuccessful = true) }

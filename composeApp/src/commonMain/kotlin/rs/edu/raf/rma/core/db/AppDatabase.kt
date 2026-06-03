@@ -33,7 +33,7 @@ import rs.edu.raf.rma.showtime.db.VideoEntity
         UserWatchlistCrossRef::class,
         QuizResultEntity::class,
     ],
-    version = 6,
+    version = 1,
     exportSchema = true,
 )
 @TypeConverters(DateConverters::class)

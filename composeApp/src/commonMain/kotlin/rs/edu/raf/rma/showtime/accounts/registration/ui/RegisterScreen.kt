@@ -48,7 +48,6 @@ fun RegisterScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    // TODO: Videti da li postoji prostije resenje od ovog, na primer kao za klik na konkretan film i otvaranje MovieDetails ekrana.
     LaunchedEffect(state.registrationSuccessful) {
         if (state.registrationSuccessful) onRegisterSuccess()
     }

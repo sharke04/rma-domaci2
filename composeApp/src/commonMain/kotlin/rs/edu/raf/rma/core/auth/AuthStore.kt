@@ -62,5 +62,13 @@ class AuthStore(
             .first()
     }
 
+    /**
+     * The id of the currently authenticated user, read from persisted auth data.
+     * Avoids a network round-trip for operations that only need the user id.
+     */
+    suspend fun requireUserId(): Int =
+        persistence.data.first().userId
+            ?: throw IllegalStateException("No authenticated user id available")
+
 
 }

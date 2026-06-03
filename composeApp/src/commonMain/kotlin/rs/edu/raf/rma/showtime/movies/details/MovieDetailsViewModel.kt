@@ -21,7 +21,6 @@ import rs.edu.raf.rma.showtime.movieIdOrThrow
 import rs.edu.raf.rma.showtime.watchlist.WatchlistRepository
 
 class MovieDetailsViewModel(
-    //TODO: Videti cemu sluzi SavedStateHandle
     private val savedStateHandle: SavedStateHandle,
     private val showtimeRepository: ShowtimeRepository,
     private val favouritesRepository: FavouritesRepository,

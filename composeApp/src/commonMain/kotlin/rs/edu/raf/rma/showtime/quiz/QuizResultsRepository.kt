@@ -4,8 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import rs.edu.raf.rma.core.auth.AuthStore
 import rs.edu.raf.rma.core.db.AppDatabase
-import rs.edu.raf.rma.networking.ShowtimeApi
 import rs.edu.raf.rma.showtime.data.toDomain
 import rs.edu.raf.rma.showtime.db.QuizResultEntity
 import rs.edu.raf.rma.showtime.domain.QuizResult
@@ -19,12 +19,12 @@ interface QuizResultsRepository {
 
 class QuizResultsRepositoryImpl(
     private val db: AppDatabase,
-    private val showtimeApi: ShowtimeApi,
+    private val authStore: AuthStore,
 ) : QuizResultsRepository {
 
     @OptIn(ExperimentalTime::class)
     override suspend fun saveResult(timeUsed: Int, points: Int) {
-        val userId = showtimeApi.getProfile().id
+        val userId = authStore.requireUserId()
         val finishedAt = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         db.showtimeDao().insertQuizResult(
             QuizResultEntity(

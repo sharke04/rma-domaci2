@@ -100,7 +100,7 @@ fun InfoItem(label: String, value: String, modifier: Modifier) {
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(Color.Black)
+            .background(Color.DarkGray)
             .padding(vertical = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

@@ -7,12 +7,14 @@ data class AuthData(
     val accessToken: String? = null,
     val refreshToken: String? = null,
     val username: String? = null,
+    val userId: Int? = null,
 ) {
     companion object {
         fun empty(): AuthData = AuthData(
             accessToken = "",
             refreshToken = "",
             username = "",
+            userId = null,
         )
     }
 }

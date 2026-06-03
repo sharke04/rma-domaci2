@@ -2,6 +2,7 @@ package rs.edu.raf.rma.showtime.db
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
@@ -11,6 +12,51 @@ import kotlinx.coroutines.flow.Flow
 interface ShowtimeDao {
     @Upsert
     suspend fun upsertMovies(movies: List<MovieEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertMoviesIgnore(movies: List<MovieEntity>)
+
+    /**
+     * Updates only the columns that the movie list endpoint provides, leaving the
+     * detail-only columns (overview, runtime, budget, …) untouched.
+     */
+    @Query("""
+        UPDATE movies SET
+            title = :title,
+            year = :year,
+            imdbRating = :imdbRating,
+            imdbVotes = :imdbVotes,
+            posterPath = :posterPath
+        WHERE id = :id
+    """)
+    suspend fun updateMovieListColumns(
+        id: String,
+        title: String,
+        year: Int?,
+        imdbRating: Float?,
+        imdbVotes: Int?,
+        posterPath: String?,
+    )
+
+    /**
+     * Upsert for movies coming from list/collection endpoints. New movies are inserted,
+     * but for movies that already exist only the list-level columns are refreshed so that
+     * previously cached detail fields are preserved.
+     */
+    @Transaction
+    suspend fun upsertMoviesFromList(movies: List<MovieEntity>) {
+        insertMoviesIgnore(movies)
+        movies.forEach { movie ->
+            updateMovieListColumns(
+                id = movie.id,
+                title = movie.title,
+                year = movie.year,
+                imdbRating = movie.imdbRating,
+                imdbVotes = movie.imdbVotes,
+                posterPath = movie.posterPath,
+            )
+        }
+    }
 
     @Upsert
     suspend fun upsertGenres(genres: List<GenreEntity>)
@@ -167,7 +213,7 @@ interface ShowtimeDao {
         genres: List<GenreEntity>,
         crossRefs: List<MovieGenreCrossRef>,
     ) {
-        upsertMovies(movies)
+        upsertMoviesFromList(movies)
         upsertGenres(genres)
         upsertMovieGenreCrossRefs(crossRefs)
     }

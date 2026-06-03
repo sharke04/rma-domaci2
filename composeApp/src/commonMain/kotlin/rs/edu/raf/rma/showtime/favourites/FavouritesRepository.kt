@@ -2,6 +2,7 @@ package rs.edu.raf.rma.showtime.favourites
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import rs.edu.raf.rma.core.auth.AuthStore
 import rs.edu.raf.rma.core.db.AppDatabase
 import rs.edu.raf.rma.networking.ShowtimeApi
 import rs.edu.raf.rma.showtime.data.toEntity
@@ -23,6 +24,7 @@ interface FavouritesRepository {
 class FavouritesRepositoryImpl(
     private val db: AppDatabase,
     private val showtimeApi: ShowtimeApi,
+    private val authStore: AuthStore,
 ) : FavouritesRepository {
 
     override suspend fun sync(): Int {
@@ -37,7 +39,7 @@ class FavouritesRepositoryImpl(
 
         val dao = db.showtimeDao()
         dao.deleteFavouritesForUser(user.id)
-        dao.upsertMovies(movies)
+        dao.upsertMoviesFromList(movies)
         dao.upsertGenres(genres)
         dao.upsertMovieGenreCrossRefs(movieGenreCrossRefs)
         dao.upsertUserFavourites(userFavouriteCrossRefs)
@@ -55,18 +57,18 @@ class FavouritesRepositoryImpl(
             .observeNumberOfFavouriteMovies(userId)
 
     override suspend fun isFavourite(movieId: String): Boolean {
-        val userId = showtimeApi.getProfile().id
+        val userId = authStore.requireUserId()
         return db.showtimeDao().isFavourite(userId, movieId)
     }
 
     override suspend fun addFavourite(movieId: String) {
-        val userId = showtimeApi.getProfile().id
+        val userId = authStore.requireUserId()
         showtimeApi.addFavorite(movieId)
         db.showtimeDao().insertUserFavourite(UserFavouriteCrossRef(userId, movieId))
     }
 
     override suspend fun removeFavourite(movieId: String) {
-        val userId = showtimeApi.getProfile().id
+        val userId = authStore.requireUserId()
         showtimeApi.removeFavorite(movieId)
         db.showtimeDao().deleteUserFavourite(userId, movieId)
     }

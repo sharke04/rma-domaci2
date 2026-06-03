@@ -44,7 +44,7 @@ fun MovieListItem(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clip(RoundedCornerShape(16.dp))
-            .background(Color.Black)
+            .background(Color.DarkGray)
             .clickable { onClick.invoke(movie.id) }
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically

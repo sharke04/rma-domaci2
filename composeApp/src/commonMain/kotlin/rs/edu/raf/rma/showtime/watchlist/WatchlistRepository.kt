@@ -2,6 +2,7 @@ package rs.edu.raf.rma.showtime.watchlist
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import rs.edu.raf.rma.core.auth.AuthStore
 import rs.edu.raf.rma.core.db.AppDatabase
 import rs.edu.raf.rma.networking.ShowtimeApi
 import rs.edu.raf.rma.showtime.data.toDomain
@@ -23,6 +24,7 @@ interface WatchlistRepository {
 class WatchlistRepositoryImpl(
     private val db: AppDatabase,
     private val showtimeApi: ShowtimeApi,
+    private val authStore: AuthStore,
 ) : WatchlistRepository {
 
     override suspend fun sync(): Int {
@@ -37,7 +39,7 @@ class WatchlistRepositoryImpl(
 
         val dao = db.showtimeDao()
         dao.deleteWatchlistForUser(user.id)
-        dao.upsertMovies(movies)
+        dao.upsertMoviesFromList(movies)
         dao.upsertGenres(genres)
         dao.upsertMovieGenreCrossRefs(movieGenreCrossRefs)
         dao.upsertUserWatchlist(userWatchlistCrossRefs)
@@ -55,18 +57,18 @@ class WatchlistRepositoryImpl(
             .observeNumberOfWatchlistMovies(userId)
 
     override suspend fun isWatchlisted(movieId: String): Boolean {
-        val userId = showtimeApi.getProfile().id
+        val userId = authStore.requireUserId()
         return db.showtimeDao().isWatchlisted(userId, movieId)
     }
 
     override suspend fun addToWatchlist(movieId: String) {
-        val userId = showtimeApi.getProfile().id
+        val userId = authStore.requireUserId()
         showtimeApi.addToWatchlist(movieId)
         db.showtimeDao().insertUserWatchlist(UserWatchlistCrossRef(userId, movieId))
     }
 
     override suspend fun removeFromWatchlist(movieId: String) {
-        val userId = showtimeApi.getProfile().id
+        val userId = authStore.requireUserId()
         showtimeApi.removeFromWatchlist(movieId)
         db.showtimeDao().deleteUserWatchlist(userId, movieId)
     }
