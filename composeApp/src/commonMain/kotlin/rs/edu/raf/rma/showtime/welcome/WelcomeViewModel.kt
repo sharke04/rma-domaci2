@@ -2,6 +2,7 @@ package rs.edu.raf.rma.showtime.welcome
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
@@ -26,10 +27,11 @@ class WelcomeViewModel(
         _state.getAndUpdate(reducer)
     }
 
+    private var hasSynced = false
+
     init {
         observeAuthState()
         refreshMovies()
-        syncCollections()
     }
 
     private fun refreshMovies() {
@@ -39,11 +41,21 @@ class WelcomeViewModel(
     }
 
     private fun syncCollections() {
+        if (hasSynced) return
+        hasSynced = true
         viewModelScope.launch {
-            favouritesRepository.sync()
+            try {
+                favouritesRepository.sync()
+            } catch (e: Exception) {
+                Napier.e(e) { "Failed to sync favourites on startup" }
+            }
         }
         viewModelScope.launch {
-            watchlistRepository.sync()
+            try {
+                watchlistRepository.sync()
+            } catch (e: Exception) {
+                Napier.e(e) { "Failed to sync watchlist on startup" }
+            }
         }
     }
 
@@ -51,7 +63,10 @@ class WelcomeViewModel(
         viewModelScope.launch {
             authStore.authState.collect { authState ->
                 when (authState) {
-                    is AuthState.Authenticated -> setState { copy(username = authState.data.username) }
+                    is AuthState.Authenticated -> {
+                        setState { copy(username = authState.data.username) }
+                        syncCollections()
+                    }
                     AuthState.Unauthenticated -> setState { copy(username = null) }
                 }
             }
