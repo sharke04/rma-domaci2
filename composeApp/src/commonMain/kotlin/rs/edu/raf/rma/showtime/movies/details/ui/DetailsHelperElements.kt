@@ -38,13 +38,13 @@ fun RatingInfoRow(movie: Movie) {
         Icon(
             imageVector = Icons.Default.Star,
             contentDescription = null,
-            tint = Color(0xFFFFC107),
+            tint = Color.Yellow,
             modifier = Modifier.size(24.dp)
         )
         Spacer(Modifier.width(4.dp))
         Text(
             text = movie.imdbRating?.toString() ?: "0.0",
-            color = Color(0xFFFFC107),
+            color = Color.Yellow,
             fontSize = 20.sp,
             fontWeight = Bold
         )
@@ -73,7 +73,7 @@ fun RatingInfoRow(movie: Movie) {
         Text(
             modifier = Modifier.padding(horizontal = 10.dp),
             text = (roundToOneDecimal(movie.tmdbRating)).toString(),
-            color = Color(0xFF01B4E4), 
+            color = Color.Cyan,
             fontWeight = Bold,
             fontSize = 14.sp
         )
@@ -100,7 +100,7 @@ fun InfoItem(label: String, value: String, modifier: Modifier) {
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(Color(0xFF1C1C27))
+            .background(Color.Black)
             .padding(vertical = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

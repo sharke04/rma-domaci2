@@ -41,8 +41,6 @@ fun ActiveQuizView(
 
     Column(modifier = Modifier.fillMaxSize()) {
         val progress = state.timeRemaining / 60f
-        val timerColor = if (state.timeRemaining <= 10) Color.Red else Color(0xFFE53935)
-
         Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -60,7 +58,7 @@ fun ActiveQuizView(
                 ) {
                     Text(
                         text = "${state.timeRemaining}s",
-                        color = timerColor,
+                        color = Color.Red,
                         fontWeight = FontWeight.Bold,
                         fontSize = 13.sp,
                     )
@@ -73,7 +71,7 @@ fun ActiveQuizView(
             LinearProgressIndicator(
                 progress = { progress },
                 modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(4.dp)),
-                color = timerColor,
+                color = Color.Red,
                 trackColor = Color.DarkGray,
             )
         }
@@ -108,7 +106,7 @@ fun ActiveQuizView(
                     Text("Continue", color = Color.White)
                 }
             },
-            containerColor = Color(0xFF1C1C1C),
+            containerColor = Color.Black,
         )
     }
 }

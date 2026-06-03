@@ -169,7 +169,7 @@ fun FilterTopBar(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color(0xFF0F101C),
+            containerColor = Color.Black,
             titleContentColor = Color.White,
         ),
         actions = {
@@ -220,7 +220,7 @@ fun DefaultTopBar(
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color(0xFF0F101C), 
+                containerColor = Color.Black,
                 titleContentColor = Color.White,
             ),
 
@@ -249,7 +249,7 @@ fun DefaultTopBar(
 
                     if (activeFilterCount > 0) {
                         Surface(
-                            color = Color(0xFFFFD700), 
+                            color = Color.Yellow,
                             shape = CircleShape,
                             modifier = Modifier
                                 .size(20.dp)

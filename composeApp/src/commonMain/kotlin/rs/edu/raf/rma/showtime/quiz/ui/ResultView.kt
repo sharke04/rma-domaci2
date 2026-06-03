@@ -52,9 +52,9 @@ fun ResultView(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        ResultRow(label = "Correct", value = "${state.correctCount}", valueColor = Color(0xFF4CAF50))
+        ResultRow(label = "Correct", value = "${state.correctCount}", valueColor = Color.Green)
         Spacer(modifier = Modifier.height(8.dp))
-        ResultRow(label = "Incorrect", value = "${state.incorrectCount}", valueColor = Color(0xFFE53935))
+        ResultRow(label = "Incorrect", value = "${state.incorrectCount}", valueColor = Color.Red)
         Spacer(modifier = Modifier.height(8.dp))
         ResultRow(label = "Time used", value = "${state.timeUsed}s", valueColor = Color.LightGray)
 

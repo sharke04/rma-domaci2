@@ -83,10 +83,10 @@ fun QuestionPage(
         ) {
             question.answers.forEachIndexed { index, answer ->
                 val containerColor = when {
-                    !answered -> Color(0xFF2A2A2A)
-                    index == question.correctAnswerIndex -> Color(0xFF2E7D32)
-                    index == selectedAnswerIndex -> Color(0xFFB71C1C)
-                    else -> Color(0xFF2A2A2A)
+                    !answered -> Color.DarkGray
+                    index == question.correctAnswerIndex -> Color.Green
+                    index == selectedAnswerIndex -> Color.Red
+                    else -> Color.DarkGray
                 }
                 Button(
                     onClick = { onAnswerSelected(index) },

@@ -46,7 +46,7 @@ fun FilterView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF0F101C))
+            .background(Color.Black)
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
@@ -123,7 +123,7 @@ fun FilterView(
             Spacer(Modifier.weight(1f))
             Box(
                 modifier = Modifier
-                    .background(Color(0xFF252537), RoundedCornerShape(4.dp))
+                    .background(Color.DarkGray, RoundedCornerShape(4.dp))
                     .padding(horizontal = 8.dp, vertical = 4.dp)
             ) {
                 Text("⭐ ${roundToHalf(state.minRating)}", color = Color.White)

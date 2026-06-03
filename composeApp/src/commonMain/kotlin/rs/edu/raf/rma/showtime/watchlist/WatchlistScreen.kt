@@ -69,7 +69,7 @@ private fun WatchlistScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF0F101C),
+                    containerColor = Color.Black,
                     titleContentColor = Color.White,
                 ),
             )

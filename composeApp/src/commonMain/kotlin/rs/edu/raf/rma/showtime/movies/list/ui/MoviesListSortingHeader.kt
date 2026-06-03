@@ -57,7 +57,7 @@ fun SortingHeader(
                 Row(
                     modifier = Modifier
                         .clip(RoundedCornerShape(50))
-                        .background(Color(0xFF252535))
+                        .background(Color.DarkGray)
                         .clickable { expanded = true }
                         .padding(horizontal = 12.dp, vertical = 6.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -80,7 +80,7 @@ fun SortingHeader(
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },
-                    modifier = Modifier.background(Color(0xFF252535))
+                    modifier = Modifier.background(Color.DarkGray)
                 ) {
                     sortOptions.forEach { option ->
                         DropdownMenuItem(

@@ -173,7 +173,7 @@ fun MovieDetailsContent(
                 Button(
                     onClick = onToggleWatchlist,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (isWatchlisted) Color(0xFF1565C0) else Color.DarkGray,
+                        containerColor = if (isWatchlisted) Color.Blue else Color.DarkGray,
                     ),
                     shape = RoundedCornerShape(50),
                 ) {

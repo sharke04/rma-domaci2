@@ -44,7 +44,7 @@ fun MovieListItem(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clip(RoundedCornerShape(16.dp))
-            .background(Color(0xFF1C1C27)) 
+            .background(Color.Black)
             .clickable { onClick.invoke(movie.id) }
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -89,13 +89,13 @@ fun MovieListItem(
                 Icon(
                     imageVector = Icons.Default.Star,
                     contentDescription = null,
-                    tint = Color(0xFFFFC107), 
+                    tint = Color.Yellow,
                     modifier = Modifier.size(18.dp)
                 )
 
                 Text(
                     text = movie.imdbRating?.toString() ?: "N/A",
-                    color = Color(0xFFFFC107),
+                    color = Color.Yellow,
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp
                 )
@@ -124,7 +124,7 @@ private fun GenreChip(genreName: String) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(Color(0xFF333333))
+            .background(Color.DarkGray)
             .padding(horizontal = 10.dp, vertical = 4.dp)
     ) {
         Text(
